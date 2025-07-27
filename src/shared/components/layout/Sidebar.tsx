@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/components/ui/button";
 import { LogOut, User, ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ import {
 import { navConfig, NavItem } from "@/shared/utils/navConfig";
 
 export const NasamSidebar: React.FC = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const { user, logout } = useAuthStore();
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
@@ -27,9 +29,9 @@ export const NasamSidebar: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      toast.success("Logged out successfully");
+      toast.success(t("auth.logoutSuccess"));
     } catch {
-      toast.error("Failed to logout");
+      toast.error(t("auth.logoutError"));
     }
   };
 
@@ -59,7 +61,7 @@ export const NasamSidebar: React.FC = () => {
                   <SidebarMenuButton asChild isActive={isActive(item.href)}>
                     <Link to={item.href}>
                       <item.icon />
-                      <span>{item.name}</span>
+                      <span>{t(item.translationKey)}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -110,7 +112,7 @@ export const NasamSidebar: React.FC = () => {
                   onClick={handleLogout}
                 >
                   <LogOut className="h-4 w-4" />
-                  Logout
+                  {t("navigation.logout")}
                 </Button>
               </div>
             )}

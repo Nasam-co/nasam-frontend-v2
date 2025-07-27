@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/shared/components/ui/button";
@@ -14,16 +15,17 @@ import {
 import { useAuthStore } from "../store/authStore";
 import toast from "react-hot-toast";
 
-const loginSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
 export function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { setUser, isAuthenticated, storeUserData } = useAuthStore();
   const [showPassword, setShowPassword] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+
+  const loginSchema = z.object({
+    email: z.string().email(t("auth.emailValidation")),
+    password: z.string().min(6, t("auth.passwordValidation")),
+  });
 
   const {
     register,
@@ -53,7 +55,7 @@ export function LoginPage() {
       const user = await AuthService.login(loginData);
       setUser(user);
       storeUserData(user);
-      toast.success(`Welcome back, ${user.name}!`);
+      toast.success(t("auth.welcomeBack", { name: user.name }));
       // navigate("/overview", { replace: true });
     } catch (error: any) {
       toast.error(error.message);
@@ -68,10 +70,10 @@ export function LoginPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Welcome Back
+            {t("auth.welcome")}
           </h1>
           <p className="text-muted-foreground">
-            Sign in to your NASAM admin dashboard
+            {t("auth.pleaseSignIn")}
           </p>
         </div>
 
@@ -84,7 +86,7 @@ export function LoginPage() {
                 htmlFor="email"
                 className="text-sm font-medium text-foreground"
               >
-                Email Address
+                {t("auth.email")}
               </label>
               <input
                 {...register("email")}
@@ -107,7 +109,7 @@ export function LoginPage() {
                 htmlFor="password"
                 className="text-sm font-medium text-foreground"
               >
-                Password
+                {t("auth.password")}
               </label>
               <div className="relative">
                 <input
@@ -118,7 +120,7 @@ export function LoginPage() {
                     "w-full px-3 py-2 pr-10 border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[--color-nasam-accent] focus:border-transparent transition-all",
                     errors.password ? "border-red-500" : "border-input"
                   )}
-                  placeholder="Enter your password"
+                  placeholder={t("auth.passwordPlaceholder")}
                 />
                 <Button
                   type="button"
@@ -150,10 +152,10 @@ export function LoginPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Signing in...
+                  {t("auth.signingIn")}
                 </>
               ) : (
-                "Sign In"
+                t("auth.loginButton")
               )}
             </Button>
           </form>

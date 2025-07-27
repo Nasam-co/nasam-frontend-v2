@@ -1,0 +1,98 @@
+{
+  "navigation": {
+    "overview": "نظرة عامة",
+    "products": "المنتجات",
+    "orders": "الطلبات",
+    "customers": "العملاء",
+    "analytics": "التحليلات",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "loginButton": "تسجيل الدخول",
+    "welcome": "مرحباً بعودتك",
+    "pleaseSignIn": "تسجيل الدخول إلى لوحة تحكم NASAM",
+    "logoutSuccess": "تم تسجيل الخروج بنجاح",
+    "logoutError": "فشل في تسجيل الخروج",
+    "emailValidation": "يرجى إدخال عنوان بريد إلكتروني صحيح",
+    "passwordValidation": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+    "passwordPlaceholder": "أدخل كلمة المرور",
+    "signingIn": "جاري تسجيل الدخول...",
+    "welcomeBack": "مرحباً بعودتك، {{name}}!"
+  },
+  "overview": {
+    "title": "لوحة التحكم",
+    "totalRevenue": "إجمالي الإيرادات",
+    "totalOrders": "إجمالي الطلبات",
+    "totalCustomers": "إجمالي العملاء",
+    "avgOrderValue": "متوسط قيمة الطلب",
+    "revenueChart": "الإيرادات عبر الوقت",
+    "topProducts": "أفضل المنتجات أداءً",
+    "stockAlerts": "تنبيهات المخزون",
+    "lowStock": "مخزون منخفض",
+    "outOfStock": "نفد من المخزون",
+    "viewAll": "عرض الكل",
+    "todayRevenue": "إيرادات اليوم",
+    "orders": "الطلبات",
+    "activeProducts": "المنتجات النشطة",
+    "revenueChange": "+12.5% من أمس",
+    "pendingOrders": "{{count}} قيد الانتظار",
+    "readyToShip": "{{count}} جاهز للشحن",
+    "acrossMarketplaces": "عبر {{count}} متاجر إلكترونية",
+    "revenueChartByMarketplace": "الإيرادات بالمتاجر الإلكترونية",
+    "topPerformers": {
+      "title": "أفضل المنتجات أداءً",
+      "thisWeek": "هذا الأسبوع",
+      "lastWeek": "الأسبوع الماضي",
+      "thisMonth": "هذا الشهر",
+      "lastMonth": "الشهر الماضي",
+      "thisQuarter": "هذا الربع",
+      "thisYear": "هذا العام"
+    }
+  },
+  "products": {
+    "title": "المنتجات",
+    "name": "اسم المنتج",
+    "category": "الفئة",
+    "price": "السعر",
+    "stock": "المخزون",
+    "status": "الحالة",
+    "actions": "الإجراءات",
+    "addProduct": "إضافة منتج",
+    "edit": "تحرير",
+    "delete": "حذف"
+  },
+  "header": {
+    "allMarketplaces": "جميع المتاجر الإلكترونية",
+    "amazon": "أمازون",
+    "trendyol": "ترينديول",
+    "noon": "نون"
+  },
+  "common": {
+    "search": "بحث",
+    "filter": "تصفية",
+    "sort": "ترتيب",
+    "loading": "جاري التحميل...",
+    "error": "حدث خطأ",
+    "retry": "إعادة المحاولة",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "confirm": "تأكيد",
+    "close": "إغلاق",
+    "edit": "تحرير",
+    "delete": "حذف",
+    "add": "إضافة",
+    "update": "تحديث",
+    "create": "إنشاء"
+  },
+  "language": {
+    "switchLanguage": "تغيير اللغة",
+    "english": "English",
+    "arabic": "العربية"
+  }
+}

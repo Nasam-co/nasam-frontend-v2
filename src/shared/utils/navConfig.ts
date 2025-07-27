@@ -5,6 +5,7 @@ export interface NavItem {
   href: string;
   icon: React.ElementType;
   isActive: boolean;
+  translationKey: string;
 }
 
 export const navConfig: NavItem[] = [
@@ -13,17 +14,20 @@ export const navConfig: NavItem[] = [
     href: "/overview",
     icon: LayoutDashboard,
     isActive: true,
+    translationKey: "navigation.overview",
   },
   {
     name: "Orders",
     href: "/orders",
     icon: Package,
     isActive: false,
+    translationKey: "navigation.orders",
   },
   {
     name: "Products",
     href: "/products",
     icon: ShoppingBasket,
     isActive: false,
+    translationKey: "navigation.products",
   },
 ];

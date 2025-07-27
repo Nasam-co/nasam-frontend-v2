@@ -5,6 +5,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
+import { cn } from "@/lib/utils";
+import { useLanguage } from "@/shared/hooks/useLanguage";
 
 interface StatCardProps {
   title: string;
@@ -21,9 +23,10 @@ export function StatCard({
   icon: Icon,
   iconClassName = "h-5 w-5",
 }: StatCardProps) {
+  const { isRTL } = useLanguage();
   return (
     <Card>
-      <div className="flex flex-row items-center justify-between pr-6">
+      <div className="flex flex-row items-center justify-between">
         <div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <div className="flex flex-col space-y-1">
@@ -37,9 +40,11 @@ export function StatCard({
             <p className="text-xs text-muted-foreground">{description}</p>
           </CardContent>
         </div>
-        <div className="rounded-full bg-sky-100 p-2">
+        <CardContent
+          className={cn("rounded-full bg-sky-100 p-2", isRTL ? "ml-4" : "mr-4")}
+        >
           <Icon className={`${iconClassName} text-sky-600`} />
-        </div>
+        </CardContent>
       </div>
     </Card>
   );

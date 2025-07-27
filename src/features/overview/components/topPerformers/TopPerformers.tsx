@@ -5,8 +5,16 @@ import {
   ShoppingCart,
   Moon,
   ShoppingBag,
-  ChevronDown,
 } from "lucide-react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/components/ui/select";
 import { TopPerformerCard, type TopPerformer } from "./TopPerformerCard";
 import { ItemsSection } from "../ItemsSection";
 
@@ -58,18 +66,35 @@ const renderTopPerformer = (performer: TopPerformer) => (
 );
 
 function TopPerformersHeader() {
+  const { t } = useTranslation();
+  const [selectedPeriod, setSelectedPeriod] = useState("this-week");
+
+  const periods = [
+    { value: "this-week", label: t("overview.topPerformers.thisWeek") },
+    { value: "this-month", label: t("overview.topPerformers.thisMonth") },
+  ];
+
   return (
-    <button className="flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors">
-      This Week
-      <ChevronDown className="w-4 h-4" />
-    </button>
+    <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+      <SelectTrigger className="w-32">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        {periods.map((period) => (
+          <SelectItem key={period.value} value={period.value}>
+            {period.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
 
 export function TopPerformers() {
+  const { t } = useTranslation();
   return (
     <ItemsSection
-      title="Top Performers"
+      title={t("overview.topPerformers.title")}
       headerAction={<TopPerformersHeader />}
       items={topPerformers}
       renderItem={renderTopPerformer}

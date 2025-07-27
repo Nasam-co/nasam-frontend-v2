@@ -7,6 +7,7 @@ import {
   Moon,
   ShoppingBag,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { StockAlertCard, type StockAlert } from "./StockAlertCard";
 import { ItemsSection } from "../ItemsSection";
 
@@ -58,17 +59,19 @@ const renderStockAlert = (alert: StockAlert) => (
 );
 
 function StockAlertHeader() {
+  const { t } = useTranslation();
   return (
     <a href="#" className="text-sm text-blue-600 hover:text-blue-700">
-      View All
+      {t("overview.viewAll")}
     </a>
   );
 }
 
 export function StockAlerts() {
+  const { t } = useTranslation();
   return (
     <ItemsSection
-      title="Stock Alerts"
+      title={t("overview.stockAlerts")}
       headerAction={<StockAlertHeader />}
       items={stockAlerts}
       renderItem={renderStockAlert}
