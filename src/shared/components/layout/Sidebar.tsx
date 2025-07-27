@@ -45,7 +45,7 @@ export const NasamSidebar: React.FC = () => {
         <img
           width={150}
           height={150}
-          src="./images/nasam-logo.png"
+          src="./assets/images/nasam-logo.png"
           alt="Nasam Logo"
         />
       </SidebarHeader>
