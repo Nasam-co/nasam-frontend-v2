@@ -2,12 +2,12 @@ import axios, {
   AxiosResponse,
   AxiosError,
   InternalAxiosRequestConfig,
-} from "axios";
+} from 'axios';
 import {
   getCookie,
   removeCookie,
   setCookie,
-} from "@/shared/utils/CookiesHelper";
+} from '@/shared/utils/CookiesHelper';
 
 interface ExtendedAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
@@ -33,23 +33,30 @@ export class ApiError extends Error {
     code?: string;
   }) {
     super(message);
-    this.name = "ApiError";
+    this.name = 'ApiError';
     this.status = status;
     this.code = code;
   }
 }
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3001/api",
-  timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || "10000"),
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/v1',
+  timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || '10000'),
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
 });
 
 apiClient.interceptors.request.use((config) => {
+  
+  const apiKey = import.meta.env.VITE_API_KEY;
+  if (apiKey) {
+    config.headers['key'] = apiKey;
+  }
+
+  
   try {
-    const userData = getCookie("user-data");
+    const userData = getCookie('user-data');
     if (userData) {
       const user = JSON.parse(userData);
       if (user.accessToken) {
@@ -57,7 +64,7 @@ apiClient.interceptors.request.use((config) => {
       }
     }
   } catch (error) {
-    console.error("Error parsing user data:", error);
+    console.error('Error parsing user data:', error);
   }
   return config;
 });
@@ -67,11 +74,11 @@ apiClient.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as ExtendedAxiosRequestConfig;
 
-    if (error.code === "ECONNABORTED") {
+    if (error.code === 'ECONNABORTED') {
       throw new ApiError({
-        message: "Request timeout",
+        message: 'Request timeout',
         status: 408,
-        code: "TIMEOUT",
+        code: 'TIMEOUT',
       });
     }
 
@@ -81,7 +88,7 @@ apiClient.interceptors.response.use(
         code?: string;
       };
 
-      // Handle 401 Unauthorized
+      
       if (
         error.response.status === 401 &&
         originalRequest &&
@@ -90,57 +97,57 @@ apiClient.interceptors.response.use(
         originalRequest._retry = true;
 
         try {
-          // Try to refresh the token
-          const userData = getCookie("user-data");
+          
+          const userData = getCookie('user-data');
           if (!userData) {
-            throw new Error("No user data available");
+            throw new Error('No user data available');
           }
 
           const user = JSON.parse(userData);
           if (!user.refreshToken) {
-            throw new Error("No refresh token available");
+            throw new Error('No refresh token available');
           }
 
           const refreshResponse = await axios.post(
             `${apiClient.defaults.baseURL}/v1/auth/refresh`,
             {
               refreshToken: user.refreshToken,
-            }
+            },
           );
 
           if (refreshResponse.data.accessToken) {
             const newToken = refreshResponse.data.accessToken;
 
-            // Update user data with new access token
+            
             const updatedUser = { ...user, accessToken: newToken };
-            setCookie("user-data", JSON.stringify(updatedUser));
+            setCookie('user-data', JSON.stringify(updatedUser));
 
-            // Update the authorization header and retry the original request
+            
             originalRequest.headers = originalRequest.headers || {};
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
             return apiClient(originalRequest);
           }
         } catch (refreshError) {
-          removeCookie("user-data");
-          window.location.href = "/login";
+          removeCookie('user-data');
+          window.location.href = '/login';
           return Promise.reject(refreshError);
         }
       }
 
       throw new ApiError({
-        message: errorData?.message || error.message || "Request failed",
+        message: errorData?.message || error.message || 'Request failed',
         status: error.response.status,
         code: errorData?.code,
       });
     }
 
     throw new ApiError({
-      message: error.message || "Network error",
+      message: error.message || 'Network error',
       status: 0,
-      code: "NETWORK_ERROR",
+      code: 'NETWORK_ERROR',
     });
-  }
+  },
 );
 
 export default apiClient;

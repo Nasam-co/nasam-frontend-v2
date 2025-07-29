@@ -1,0 +1,96 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug Dev Environment",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "npm: dev",
+      "sourceMaps": true,
+      "trace": true
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug Testing Environment",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "npm: dev:testing",
+      "sourceMaps": true,
+      "trace": true
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug Production Environment",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}/src",
+      "preLaunchTask": "npm: dev:prod",
+      "sourceMaps": true,
+      "trace": true
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Build Dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "build:dev"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Build Testing",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "build:testing"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Build Production",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "build:prod"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Deploy to Testing",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "deploy:testing"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Deploy to Production",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "deploy:prod"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Lint",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "lint"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack Dev",
+      "configurations": ["Debug Dev Environment"],
+      "stopAll": true
+    }
+  ]
+}

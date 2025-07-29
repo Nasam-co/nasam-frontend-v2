@@ -1,0 +1,65 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "npm",
+      "script": "dev",
+      "label": "npm: dev",
+      "detail": "vite --port 8080 --mode dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "^\\s*VITE\\s+v([\\d.]+)\\s+ready in\\s+(\\d+)\\s*ms",
+          "file": 1,
+          "message": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\s*VITE\\s+v",
+          "endsPattern": "Local:\\s+http://localhost:\\d+"
+        }
+      }
+    },
+    {
+      "type": "npm",
+      "script": "dev:testing",
+      "label": "npm: dev:testing",
+      "detail": "vite --port 8080 --mode testing",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "^\\s*VITE\\s+v([\\d.]+)\\s+ready in\\s+(\\d+)\\s*ms",
+          "file": 1,
+          "message": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\s*VITE\\s+v",
+          "endsPattern": "Local:\\s+http://localhost:\\d+"
+        }
+      }
+    },
+    {
+      "type": "npm",
+      "script": "dev:prod",
+      "label": "npm: dev:prod",
+      "detail": "vite --port 8080 --mode production",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "vite",
+        "pattern": {
+          "regexp": "^\\s*VITE\\s+v([\\d.]+)\\s+ready in\\s+(\\d+)\\s*ms",
+          "file": 1,
+          "message": 2
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\s*VITE\\s+v",
+          "endsPattern": "Local:\\s+http://localhost:\\d+"
+        }
+      }
+    }
+  ]
+}

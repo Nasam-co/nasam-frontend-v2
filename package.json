@@ -4,10 +4,20 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8080 --mode development",
+    "dev:testing": "vite --port 8080 --mode testing",
+    "dev:prod": "vite --port 8080 --mode production",
     "build": "tsc -b && vite build",
+    "build:dev": "tsc -b && vite build --mode development",
+    "build:testing": "tsc -b && vite build --mode testing",
+    "build:prod": "tsc -b && vite build --mode production",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --port 8080",
+    "preview:dev": "vite preview --port 8080 --mode development",
+    "preview:testing": "vite preview --port 8080 --mode testing",
+    "preview:prod": "vite preview --port 8080 --mode production",
+    "deploy:testing": "./deploy.sh testing",
+    "deploy:prod": "./deploy.sh prod"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
