@@ -47,6 +47,14 @@
   --color-nasam-accent: #d6b984;
   --color-nasam-cream: #f2e1c9;
   --color-nasam-neutral: #f5f5f5;
+
+  --color-ds-background-100: var(----ds-background-100);
+  --color-ds-gray-1000: var(----ds-gray-1000);
+  --color-ds-gray-700: var(----ds-gray-700);
+  --color-ds-gray-600: var(----ds-gray-600);
+  --color-ds-gray-500: var(----ds-gray-500);
+  --color-ds-gray-200: var(----ds-gray-200);
+  --color-ds-gray-100: var(----ds-gray-100);
 }
 
 :root {

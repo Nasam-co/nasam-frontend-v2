@@ -14,17 +14,18 @@ export function useOrdersTableData(params: OrdersOverviewRequest) {
   const queryClient = useQueryClient();
   const { data: ordersResponse, isLoading, error } = useOrders(params);
 
-  const tableData: OrderTableRow[] = ordersResponse?.orders?.map((order) => ({
-    id: order.id,
-    orderIdInMarketplace: order.orderIdInMarketplace,
-    orderDate: new Date(order.orderDate).toLocaleDateString(),
-    marketplace: order.marketplace,
-    fulfillmentModel: order.fulfillmentModel,
-    orderStatus: order.orderStatus,
-    totalAmount: order.totalAmount,
-    items: order.orderItems?.length || 0,
-    trackingNumber: order.trackingNumber,
-  })) || [];
+  const tableData: OrderTableRow[] =
+    ordersResponse?.orders?.map((order) => ({
+      id: order.id,
+      orderIdInMarketplace: order.orderIdInMarketplace,
+      orderDate: new Date(order.orderDate).toLocaleDateString(),
+      marketplace: order.marketplace,
+      fulfillmentModel: order.fulfillmentModel,
+      orderStatus: order.orderStatus,
+      totalAmount: order.totalAmount,
+      items: order.orderItems?.length || 0,
+      trackingNumber: order.trackingNumber,
+    })) || [];
 
   // Prefetch next page
   const prefetchNextPage = () => {
