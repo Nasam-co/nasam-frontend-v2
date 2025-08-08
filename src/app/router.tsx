@@ -4,6 +4,7 @@ import { AuthGuard } from "@/features/auth/components/AuthGuard";
 import { MainLayout } from "@/shared/components/layout/MainLayout";
 import { OverviewPage } from "@/features/overview/pages/OverviewPage";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
+import OrdersPage from "@/features/orders/pages/OrdersPage";
 
 export const AppRouter: React.FC = () => {
   return (
@@ -25,6 +26,9 @@ export const AppRouter: React.FC = () => {
 
         {/* Overview page */}
         <Route path="overview" element={<OverviewPage />} />
+
+        {/* Orders page */}
+        <Route path="orders" element={<OrdersPage />} />
       </Route>
 
       {/* Catch all route */}

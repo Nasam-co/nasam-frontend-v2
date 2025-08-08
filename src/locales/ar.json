@@ -53,7 +53,13 @@
       "lastMonth": "الشهر الماضي",
       "thisQuarter": "هذا الربع",
       "thisYear": "هذا العام"
-    }
+    },
+    "dateRange": {
+      "7days": "آخر 7 أيام",
+      "30days": "آخر 30 يوم",
+      "90days": "آخر 90 يوم"
+    },
+    "fromYesterday": "من أمس"
   },
   "products": {
     "title": "المنتجات",
@@ -89,6 +95,32 @@
     "add": "إضافة",
     "update": "تحديث",
     "create": "إنشاء"
+  },
+  "orders": {
+    "title": "الطلبات",
+    "management": "إدارة الطلبات",
+    "filterByStatus": "تصفية حسب الحالة",
+    "allStatus": "كل الحالات",
+    "pending": "قيد الانتظار",
+    "confirmed": "مؤكد",
+    "processing": "قيد المعالجة",
+    "shipped": "تم الشحن",
+    "delivered": "تم التسليم",
+    "cancelled": "ملغى",
+    "refunded": "مسترد",
+    "orderId": "رقم الطلب",
+    "date": "التاريخ",
+    "customer": "العميل",
+    "status": "الحالة",
+    "total": "الإجمالي",
+    "items": "العناصر",
+    "actions": "الإجراءات",
+    "viewDetails": "عرض التفاصيل",
+    "refresh": "تحديث",
+    "showingResults": "عرض {{count}} من {{total}} طلب",
+    "noResults": "لم يتم العثور على طلبات",
+    "loadingError": "خطأ في تحميل الطلبات",
+    "tryAgain": "حاول مرة أخرى"
   },
   "language": {
     "switchLanguage": "تغيير اللغة",

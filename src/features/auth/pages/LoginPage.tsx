@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/utils";
 import {
   AuthService,
   type LoginCredentials,
@@ -72,9 +72,7 @@ export function LoginPage() {
           <h1 className="text-3xl font-bold text-foreground mb-2">
             {t("auth.welcome")}
           </h1>
-          <p className="text-muted-foreground">
-            {t("auth.pleaseSignIn")}
-          </p>
+          <p className="text-muted-foreground">{t("auth.pleaseSignIn")}</p>
         </div>
 
         {/* Login Form */}

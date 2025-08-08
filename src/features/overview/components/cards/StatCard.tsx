@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/shared/components/ui/card";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/utils";
 import { useLanguage } from "@/shared/hooks/useLanguage";
 
 interface StatCardProps {

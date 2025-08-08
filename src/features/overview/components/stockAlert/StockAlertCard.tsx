@@ -23,7 +23,7 @@ export function StockAlertCard({ alert }: StockAlertCardProps) {
       icon={alert.icon}
       marketplaceIcon={alert.marketplaceIcon}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center max-w-xs gap-2">
         <span
           className={`text-sm font-medium ${
             alert.alertLevel === "critical" ? "text-red-600" : "text-orange-600"

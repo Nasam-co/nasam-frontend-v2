@@ -6,13 +6,14 @@ export type { LoginCredentials } from "../types";
 
 export class AuthService {
   static async login(credentials: LoginCredentials): Promise<User> {
-    const response = await apiClient.post<User>("/v1/auth/sign-in", {
+    const response = await apiClient.post<User>("auth/sign-in", {
       email: credentials.email,
       password: credentials.password,
     });
 
     return response.data;
   }
+
 
   static async refreshToken(): Promise<void> {
     try {
