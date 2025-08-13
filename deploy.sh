@@ -40,7 +40,7 @@ case "$ENVIRONMENT" in
         S3_BUCKET="nasam-web-app-prod"
         CLOUDFRONT_DISTRIBUTION_ID="E2AGQE672CVK3E"
         BUILD_COMMAND="npm run build:prod"
-        ENV_FILE=".env.prod"
+        ENV_FILE=".env.production"
         ;;
     *)
         echo -e "${RED}❌ Invalid environment: $ENVIRONMENT${NC}"

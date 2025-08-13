@@ -1,4 +1,4 @@
-import { LayoutDashboard, Package, ShoppingBasket } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingBasket } from 'lucide-react';
 
 export interface NavItem {
   name: string;
@@ -10,24 +10,31 @@ export interface NavItem {
 
 export const navConfig: NavItem[] = [
   {
-    name: "Overview",
-    href: "/overview",
+    name: 'Overview',
+    href: '/overview',
     icon: LayoutDashboard,
     isActive: true,
-    translationKey: "navigation.overview",
+    translationKey: 'navigation.overview',
   },
   {
-    name: "Orders",
-    href: "/orders",
+    name: 'Orders',
+    href: '/orders',
     icon: Package,
     isActive: false,
-    translationKey: "navigation.orders",
+    translationKey: 'navigation.orders',
   },
   {
-    name: "Products",
-    href: "/products",
+    name: 'Products',
+    href: '/products',
     icon: ShoppingBasket,
     isActive: false,
-    translationKey: "navigation.products",
+    translationKey: 'navigation.products',
+  },
+  {
+    name: 'Marketplace Accounts',
+    href: '/marketplace-accounts',
+    icon: ShoppingBasket,
+    isActive: false,
+    translationKey: 'navigation.marketplace-accounts',
   },
 ];

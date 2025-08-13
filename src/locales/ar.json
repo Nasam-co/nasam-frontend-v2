@@ -55,6 +55,9 @@
       "thisYear": "هذا العام"
     }
   },
+  "marketplace-accounts": {
+    "title": "حسابات المتاجر"
+  },
   "products": {
     "title": "المنتجات",
     "name": "اسم المنتج",
