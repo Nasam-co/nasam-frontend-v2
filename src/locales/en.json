@@ -6,7 +6,8 @@
     "customers": "Customers",
     "analytics": "Analytics",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "marketplace-accounts": "Marketplace Accounts"
   },
   "auth": {
     "login": "Login",
