@@ -5,6 +5,8 @@ import { MainLayout } from "@/shared/components/layout/MainLayout";
 import { OverviewPage } from "@/features/overview/pages/OverviewPage";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
 import OrdersPage from "@/features/orders/pages/OrdersPage";
+import ProductsPage from "@/products-page";
+import MarketplaceAccountsPage from "@/marketplace-accounts-updated";
 
 export const AppRouter: React.FC = () => {
   return (
@@ -29,6 +31,15 @@ export const AppRouter: React.FC = () => {
 
         {/* Orders page */}
         <Route path="orders" element={<OrdersPage />} />
+
+        {/* Products page */}
+        <Route path="products" element={<ProductsPage />} />
+
+        {/* Marketplace Accounts page */}
+        <Route
+          path="marketplace-accounts"
+          element={<MarketplaceAccountsPage />}
+        />
       </Route>
 
       {/* Catch all route */}

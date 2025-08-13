@@ -25,6 +25,9 @@
     "signingIn": "Signing in...",
     "welcomeBack": "Welcome back, {{name}}!"
   },
+  "marketplace-accounts": {
+    "title": "Marketplace Accounts"
+  },
   "overview": {
     "title": "Dashboard Overview",
     "totalRevenue": "Total Revenue",
