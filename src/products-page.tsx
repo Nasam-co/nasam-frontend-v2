@@ -268,21 +268,7 @@ HOME-001,29,480`;
     });
   };
 
-  const renderEmptyPage = (title: string, description: string, icon: React.ReactNode) => (
-    <div className="flex-1 flex items-center justify-center">
-      <div className="text-center">
-        <div className="mx-auto w-12 h-12 flex items-center justify-center rounded-lg" style={{ backgroundColor: 'var(--secondary)' }}>
-          {icon}
-        </div>
-        <h3 className="mt-4 text-lg font-semibold" style={{ color: 'var(--foreground)' }}>
-          {title}
-        </h3>
-        <p className="mt-2 text-sm" style={{ color: 'var(--muted-foreground)' }}>
-          {description}
-        </p>
-      </div>
-    </div>
-  );
+
 
 
 
@@ -296,7 +282,7 @@ HOME-001,29,480`;
         <div className="flex-1 flex flex-col">
           <div className="p-6">
             <div className="max-w-6xl">
-return (
+
           <div>
             {/* Header */}
             <div className="mb-8">
@@ -318,7 +304,7 @@ return (
                     style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
                   >
                     <TrendingUp className="w-5 h-5" />
-                    <span>Bulk Updates</span>
+                    <span>Bulk & Quick Updates</span>
                   </button>
                   
                   {/* Secondary: Import Products */}
@@ -341,63 +327,7 @@ return (
                   Product Catalog ({filteredProducts.length} products)
                 </h3>
                 
-                {/* Seller Filter */}
-                {products.length > 0 && (
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowSellerDropdown(!showSellerDropdown)}
-                      className="flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors"
-                      style={{ backgroundColor: 'var(--secondary)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
-                    >
-                      <User className="w-4 h-4" />
-                      <span className="text-sm">
-                        {selectedSellers.length === sellers.length 
-                          ? 'All Sellers' 
-                          : selectedSellers.length === 1 
-                            ? selectedSellers[0].name
-                            : `${selectedSellers.length} Sellers`
-                        }
-                      </span>
-                      <ChevronDown className="w-4 h-4" />
-                    </button>
-                    
-                    {showSellerDropdown && (
-                      <div className="absolute top-full right-0 mt-2 rounded-lg shadow-xl z-20 min-w-64" style={{ backgroundColor: 'var(--card)', border: '1px solid var(--border)' }}>
-                        <div className="p-3 border-b" style={{ borderColor: 'var(--border)' }}>
-                          <span className="text-sm font-medium" style={{ color: 'var(--foreground)' }}>Filter by Sellers</span>
-                        </div>
-                        {sellers.map((seller) => (
-                          <label
-                            key={seller.id}
-                            className="flex items-center space-x-3 p-3 hover:opacity-80 transition-opacity cursor-pointer border-b last:border-b-0"
-                            style={{ borderColor: 'var(--border)' }}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={selectedSellers.some(s => s.id === seller.id)}
-                              onChange={() => toggleSeller(seller)}
-                              className="rounded"
-                              style={{ accentColor: 'var(--accent)' }}
-                            />
-                            <div>
-                              <div className="font-medium text-sm" style={{ color: 'var(--foreground)' }}>{seller.name}</div>
-                              <div className="text-xs" style={{ color: 'var(--muted-foreground)' }}>{seller.email}</div>
-                            </div>
-                          </label>
-                        ))}
-                        <div className="p-3 border-t" style={{ borderColor: 'var(--border)' }}>
-                          <button
-                            onClick={() => setShowSellerDropdown(false)}
-                            className="w-full text-center text-sm px-3 py-1 rounded"
-                            style={{ backgroundColor: 'var(--primary)', color: 'var(--primary-foreground)' }}
-                          >
-                            Apply
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
+             
               </div>
               
               {filteredProducts.length === 0 ? (
@@ -527,7 +457,7 @@ return (
               </div>
             )}
           </div>
-        );
+
             </div>
           </div>
         </div>
@@ -665,7 +595,7 @@ return (
                     <TrendingUp className="w-5 h-5 mt-0.5" style={{ color: 'var(--primary)' }} />
                     <div>
                       <h4 className="font-medium mb-1" style={{ color: 'var(--foreground)' }}>
-                        Quick Updates
+                       Bulk & Quick Updates
                       </h4>
                       <p className="text-sm" style={{ color: 'var(--muted-foreground)' }}>
                         Update prices and inventory across all sellers at once. Perfect for discount campaigns or stock adjustments. 
