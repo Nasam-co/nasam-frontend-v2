@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Upload, Package, Check, X, AlertCircle, Loader2, RefreshCw, Download, User, ChevronDown, Settings, BarChart3, Store, ShoppingBag, ExternalLink, Zap, Plus, Edit3, UserPlus, TrendingUp } from 'lucide-react';
+import { Upload, Package,  X,  Loader2,  Download, User, ChevronDown, Settings, BarChart3, Store, ShoppingBag, Plus, Edit3, UserPlus, TrendingUp } from 'lucide-react';
+
 
 // CSS Custom Properties
 const cssVariables = `
@@ -69,7 +70,7 @@ interface ImportProgress {
   errors: Array<{ sku: string; marketplace: string; error: string }>;
 }
 
-type ActivePage = 'overview' | 'marketplace-accounts' | 'products' | 'orders';
+
 type DemoState = 'empty' | 'single-seller' | 'multi-seller';
 type ModalType = 'import' | 'quick-updates' | null;
 type ImportScenario = 'new-seller' | 'existing-seller';
@@ -93,7 +94,7 @@ const ProductsPage = () => {
   const [demoState, setDemoState] = useState<DemoState>('empty');
   const [importScenario, setImportScenario] = useState<ImportScenario>('new-seller');
   const [showDemoControls, setShowDemoControls] = useState(true);
-  const [activePage, setActivePage] = useState<ActivePage>('products');
+
   const [selectedSellers, setSelectedSellers] = useState<Seller[]>([sellers[0]]);
   const [showSellerDropdown, setShowSellerDropdown] = useState(false);
 
@@ -283,17 +284,19 @@ HOME-001,29,480`;
     </div>
   );
 
-  const renderMainContent = () => {
-    switch (activePage) {
-      case 'overview':
-        return renderEmptyPage('Overview Dashboard', 'Analytics and insights coming soon', <BarChart3 className="w-6 h-6" style={{ color: 'var(--primary)' }} />);
-      case 'marketplace-accounts':
-        return renderEmptyPage('Marketplace Accounts', 'Connect and manage your marketplace integrations', <Store className="w-6 h-6" style={{ color: 'var(--primary)' }} />);
-      case 'orders':
-        return renderEmptyPage('Order Management', 'Track and manage orders from all marketplaces', <ShoppingBag className="w-6 h-6" style={{ color: 'var(--primary)' }} />);
-      case 'products':
-      default:
-        return (
+
+
+  return (
+    <>
+      <style>{cssVariables}</style>
+      <div className="min-h-screen flex" style={{ backgroundColor: 'var(--background)' }}>
+       
+
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col">
+          <div className="p-6">
+            <div className="max-w-6xl">
+return (
           <div>
             {/* Header */}
             <div className="mb-8">
@@ -525,20 +528,6 @@ HOME-001,29,480`;
             )}
           </div>
         );
-    }
-  };
-
-  return (
-    <>
-      <style>{cssVariables}</style>
-      <div className="min-h-screen flex" style={{ backgroundColor: 'var(--background)' }}>
-       
-
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col">
-          <div className="p-6">
-            <div className="max-w-6xl">
-              {renderMainContent()}
             </div>
           </div>
         </div>
@@ -825,11 +814,14 @@ HOME-001,29,480`;
                   {importResults.nextStep === 'marketplace-setup' ? (
                     // New seller flow - guide to marketplace setup
                     <button
+                      
                       onClick={() => {
                         setImportResults(null);
                         setActiveModal(null);
                         // Simulate navigation to marketplace accounts
-                        alert('Redirecting to Marketplace Accounts to set up connections...');
+                        // setActivePage('marketplace-accounts')
+                        window.history.replaceState({}, '', '/marketplace-accounts');
+                        window.dispatchEvent(new PopStateEvent('popstate'));
                       }}
                       className="w-full px-4 py-2 rounded-lg hover:opacity-90"
                       style={{ backgroundColor: 'var(--accent)', color: 'var(--accent-foreground)' }}
