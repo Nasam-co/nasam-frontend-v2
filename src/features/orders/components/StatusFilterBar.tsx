@@ -3,6 +3,7 @@ import { OrdersService } from "../services/orders";
 import { ShipmentStatus, OrderStatusCountsRequest } from "../types";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
+import { useSellersStore } from "@/shared/store/sellersStore";
 
 interface StatusFilterBarProps {
   selectedStatus?: ShipmentStatus;
@@ -11,29 +12,38 @@ interface StatusFilterBarProps {
 }
 
 const STATUS_COLORS: Record<ShipmentStatus, string> = {
-  PENDING: "bg-gray-100 text-gray-800 hover:bg-gray-200",
-  PROCESSING: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
-  SHIPPED: "bg-blue-100 text-blue-800 hover:bg-blue-200",
-  DELIVERED: "bg-green-100 text-green-800 hover:bg-green-200",
-  CANCELLED: "bg-red-100 text-red-800 hover:bg-red-200",
-  REFUNDED: "bg-purple-100 text-purple-800 hover:bg-purple-200",
-  RETURNED: "bg-orange-100 text-orange-800 hover:bg-orange-200",
+  Created: "bg-gray-100 text-gray-800 hover:bg-gray-200",
+  Packed: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
+  Shipped: "bg-blue-100 text-blue-800 hover:bg-blue-200",
+  Delivered: "bg-green-100 text-green-800 hover:bg-green-200",
+  Cancelled: "bg-red-100 text-red-800 hover:bg-red-200",
+  Returned: "bg-orange-100 text-orange-800 hover:bg-orange-200",
 };
 
 const STATUS_LABELS: Record<ShipmentStatus, string> = {
-  PENDING: "Pending",
-  PROCESSING: "Processing",
-  SHIPPED: "Shipped", 
-  DELIVERED: "Delivered",
-  CANCELLED: "Cancelled",
-  REFUNDED: "Refunded",
-  RETURNED: "Returned",
+  Created: "Created",
+  Packed: "Packed",
+  Shipped: "Shipped",
+  Delivered: "Delivered",
+  Cancelled: "Cancelled",
+  Returned: "Returned",
 };
 
 export default function StatusFilterBar({ selectedStatus, onStatusChange, filters = {} }: StatusFilterBarProps) {
+  const getSelectedSellerIds = useSellersStore((state) => state.getSelectedSellerIds);
+  
+  // Create filters object that includes seller IDs
+  const statusCountsFilters = {
+    ...filters,
+    sellerIds: (() => {
+      const actualSellerIds = getSelectedSellerIds();
+      return actualSellerIds.includes("all-sellers") ? undefined : actualSellerIds.map(Number);
+    })(),
+  };
+
   const { data: statusCounts, isLoading } = useQuery({
-    queryKey: ["orderStatusCounts", filters],
-    queryFn: () => OrdersService.getOrderStatusCounts(filters),
+    queryKey: ["orderStatusCounts", statusCountsFilters],
+    queryFn: () => OrdersService.getOrderStatusCounts(statusCountsFilters),
     staleTime: 5 * 60 * 1000,
   });
 

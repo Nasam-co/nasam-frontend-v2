@@ -1,6 +1,6 @@
 import { DataTable } from "@/shared/components/ui/data-table";
 import { ordersColumns } from "../components/columns";
-import { useOrdersTableData } from "../hooks/useOrders";
+import { useOrdersTableData } from "../hooks/useOrdersTableData";
 import { OrdersOverviewRequest } from "../types";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";

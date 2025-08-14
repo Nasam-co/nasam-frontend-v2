@@ -13,15 +13,25 @@ export class OrdersService {
   ): Promise<OrderOverviewResponse> {
     const queryParams: Record<string, string | number> = {};
 
-    if (params.startDate) queryParams.startDate = params.startDate;
-    if (params.endDate) queryParams.endDate = params.endDate;
-    if (params.sellerIds) queryParams.sellerIds = params.sellerIds.join(",");
-    if (params.excludedMarketplacesIds)
-      queryParams.excludedMarketplacesIds =
-        params.excludedMarketplacesIds.join(",");
-    if (params.status) queryParams.status = params.status;
-    if (params.page) queryParams.page = params.page;
-    if (params.limit) queryParams.limit = params.limit;
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      
+      switch (key) {
+        case 'sellerIds':
+          if (Array.isArray(value) && value.length > 0) {
+            queryParams.sellerIds = value.join(",");
+          }
+          break;
+        case 'excludedMarketplacesIds':
+          if (Array.isArray(value) && value.length > 0) {
+            queryParams.excludedMarketplacesIds = value.join(",");
+          }
+          break;
+        default:
+          queryParams[key] = value;
+          break;
+      }
+    });
 
     const response = await apiClient.get<OrderOverviewResponse>("orders", {
       params: queryParams,
@@ -39,12 +49,25 @@ export class OrdersService {
   ): Promise<OrderStatusCountsResponse> {
     const queryParams: Record<string, string | number> = {};
 
-    if (params.startDate) queryParams.startDate = params.startDate;
-    if (params.endDate) queryParams.endDate = params.endDate;
-    if (params.sellerIds) queryParams.sellerIds = params.sellerIds.join(",");
-    if (params.excludedMarketplacesIds)
-      queryParams.excludedMarketplacesIds =
-        params.excludedMarketplacesIds.join(",");
+    Object.entries(params).forEach(([key, value]) => {
+      if (value === undefined || value === null) return;
+      
+      switch (key) {
+        case 'sellerIds':
+          if (Array.isArray(value) && value.length > 0) {
+            queryParams.sellerIds = value.join(",");
+          }
+          break;
+        case 'excludedMarketplacesIds':
+          if (Array.isArray(value) && value.length > 0) {
+            queryParams.excludedMarketplacesIds = value.join(",");
+          }
+          break;
+        default:
+          queryParams[key] = value;
+          break;
+      }
+    });
 
     const response = await apiClient.get<OrderStatusCountsResponse>(
       "orders/status-counts",
