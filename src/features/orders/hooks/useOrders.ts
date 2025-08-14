@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { OrdersService } from "../services/orders";
-import { OrdersParams, OrderTableRow } from "../types";
+import { OrdersOverviewRequest, OrderTableRow } from "../types";
 
-export function useOrders(params: OrdersParams) {
+export function useOrders(params: OrdersOverviewRequest) {
   return useQuery({
     queryKey: ["orders", params],
     queryFn: () => OrdersService.getOrders(params),
@@ -10,24 +10,55 @@ export function useOrders(params: OrdersParams) {
   });
 }
 
-export function useOrdersTableData(params: OrdersParams) {
+export function useOrdersTableData(params: OrdersOverviewRequest) {
+  const queryClient = useQueryClient();
   const { data: ordersResponse, isLoading, error } = useOrders(params);
 
-  const tableData: OrderTableRow[] = ordersResponse?.data?.map((order) => ({
+  const tableData: OrderTableRow[] = ordersResponse?.orders?.map((order) => ({
     id: order.id,
-    orderDate: order.orderDate,
-    customerName: order.customerName || 'N/A',
-    status: order.status,
+    orderIdInMarketplace: order.orderIdInMarketplace,
+    orderDate: new Date(order.orderDate).toLocaleDateString(),
+    marketplace: order.marketplace,
+    fulfillmentModel: order.fulfillmentModel,
+    orderStatus: order.orderStatus,
     totalAmount: order.totalAmount,
-    currency: order.currency || 'USD',
-    items: order.items?.length || 0,
+    items: order.orderItems?.length || 0,
+    trackingNumber: order.trackingNumber,
   })) || [];
+
+  // Prefetch next page
+  const prefetchNextPage = () => {
+    const nextPageParams = { ...params, page: (params.page || 1) + 1 };
+    queryClient.prefetchQuery({
+      queryKey: ["orders", nextPageParams],
+      queryFn: () => OrdersService.getOrders(nextPageParams),
+      staleTime: 5 * 60 * 1000,
+    });
+  };
+
+  // Prefetch previous page
+  const prefetchPreviousPage = () => {
+    if (params.page && params.page > 1) {
+      const prevPageParams = { ...params, page: params.page - 1 };
+      queryClient.prefetchQuery({
+        queryKey: ["orders", prevPageParams],
+        queryFn: () => OrdersService.getOrders(prevPageParams),
+        staleTime: 5 * 60 * 1000,
+      });
+    }
+  };
+
+  // Determine if there's a next page based on the number of items returned
+  const hasNextPage = ordersResponse?.orders?.length === (params.limit || 10);
 
   return {
     data: tableData,
     isLoading,
     error,
-    totalPages: ordersResponse?.totalPages || 0,
-    total: ordersResponse?.total || 0,
+    page: ordersResponse?.page || 1,
+    limit: ordersResponse?.limit || 20,
+    hasNextPage,
+    prefetchNextPage,
+    prefetchPreviousPage,
   };
 }
