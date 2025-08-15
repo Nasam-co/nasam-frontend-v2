@@ -13,7 +13,7 @@ export interface MarketplaceAccount {
   connectionError: string | null;
   fulfillmentModel: string;
   warehouseId: number | null;
-  lastOrderSync: string | null;
+  lastProductLink: string | null;
   createdAt: string;
   updatedAt: string;
   marketplace: Marketplace;
@@ -22,12 +22,12 @@ export interface MarketplaceAccount {
 export interface Seller {
   id: number;
   name: string;
+  nameAR: string | null;
   logoUrl: string | null;
   contactEmail: string | null;
   contactPhone: string | null;
   isActive: boolean;
   notes: string | null;
-  warehouseId: number | null;
   createdAt: string;
   updatedAt: string;
   marketplaceAccounts: MarketplaceAccount[];
@@ -43,9 +43,15 @@ export interface Marketplace {
   updatedAt: string;
 }
 
-export interface RevenueTrendItem {
+export interface RevenueTrendData {
   date: string;
-  revenue: number;
+  totalRevenue: number;
+  totalOrders: number;
+}
+
+export interface RevenueTrendItem {
+  marketplace: string;
+  trends: RevenueTrendData[];
 }
 
 export interface StockAlertItem {
@@ -62,10 +68,10 @@ export interface StockAlerts {
 }
 
 export interface TopPerformer {
-  id: number;
-  name: string;
-  revenue: number;
-  orders: number;
+  listing: {
+    sku: string;
+  };
+  unitsSold: number;
 }
 
 export interface DashboardStats {
