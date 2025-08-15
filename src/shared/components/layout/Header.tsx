@@ -1,24 +1,102 @@
-import React, { useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SidebarTrigger } from "@/shared/components/ui/sidebar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/shared/components/ui/select";
+import { MultiSelect } from "@/shared/components/ui/multi-select";
 import { LanguageSwitcher } from "@/shared/components/common/LanguageSwitcher";
+import { Seller } from "@/shared/types/Sellers.type";
+import { useSellersStore } from "@/shared/store/sellersStore";
 
-const marketplaces = ["all-marketplaces", "amazon", "trendyol", "noon"];
-const stores = ["Thannah", "IOUD", "Rfoof", "O'SO"];
+// Remove hardcoded marketplaces - will be dynamically generated from sellers
 
-export const Header: React.FC = () => {
+export default function Header({ sellers }: { sellers?: Seller[] }) {
   const { t } = useTranslation();
-  const [selectedMarketplace, setSelectedMarketplace] = useState(
-    marketplaces[0]
-  );
-  const [selectedStore, setSelectedStore] = useState(stores[0]);
+  const {
+    selectedSellerIds,
+    selectedMarketplaces,
+    setSelectedSellerIds,
+    setSelectedMarketplaces,
+  } = useSellersStore();
+
+  // Generate available marketplaces dynamically from user's allowed sellers
+  const availableMarketplaces = useMemo(() => {
+    if (!sellers || sellers.length === 0) {
+      return ["all-marketplaces"];
+    }
+
+    const marketplaceSet = new Set<string>(["all-marketplaces"]);
+
+    sellers.forEach((seller) => {
+      seller.marketplaceAccounts?.forEach((account) => {
+        if (account.marketplace?.name) {
+          marketplaceSet.add(account.marketplace.name.toLowerCase());
+        }
+      });
+    });
+
+    return Array.from(marketplaceSet);
+  }, [sellers]);
+
+  const handleSellerChange = (values: string[]) => {
+    // If no values selected, default to "all-sellers"
+    if (values.length === 0) {
+      setSelectedSellerIds(["all-sellers"]);
+      return;
+    }
+
+    // If "all-sellers" is being selected and other sellers are already selected
+    if (
+      values.includes("all-sellers") &&
+      selectedSellerIds.some((id) => id !== "all-sellers")
+    ) {
+      // Only keep "all-sellers"
+      setSelectedSellerIds(["all-sellers"]);
+      return;
+    }
+
+    // If a specific seller is being selected while "all-sellers" is selected
+    if (
+      values.some((id) => id !== "all-sellers") &&
+      selectedSellerIds.includes("all-sellers")
+    ) {
+      // Remove "all-sellers" and keep only the specific sellers
+      setSelectedSellerIds(values.filter((id) => id !== "all-sellers"));
+      return;
+    }
+
+    // Normal selection
+    setSelectedSellerIds(values);
+  };
+
+  const handleMarketplaceChange = (values: string[]) => {
+    // If no values selected, default to "all-marketplaces"
+    if (values.length === 0) {
+      setSelectedMarketplaces(["all-marketplaces"]);
+      return;
+    }
+
+    // If "all-marketplaces" is being selected and other marketplaces are already selected
+    if (
+      values.includes("all-marketplaces") &&
+      selectedMarketplaces.some((id) => id !== "all-marketplaces")
+    ) {
+      // Only keep "all-marketplaces"
+      setSelectedMarketplaces(["all-marketplaces"]);
+      return;
+    }
+
+    // If a specific marketplace is being selected while "all-marketplaces" is selected
+    if (
+      values.some((id) => id !== "all-marketplaces") &&
+      selectedMarketplaces.includes("all-marketplaces")
+    ) {
+      // Remove "all-marketplaces" and keep only the specific marketplaces
+      setSelectedMarketplaces(values.filter((id) => id !== "all-marketplaces"));
+      return;
+    }
+
+    // Normal selection
+    setSelectedMarketplaces(values);
+  };
 
   const getMarketplaceLabel = (marketplace: string) => {
     switch (marketplace) {
@@ -40,33 +118,36 @@ export const Header: React.FC = () => {
       <div className="flex h-full items-center gap-4 justify-between">
         <div className="flex items-center gap-4">
           <SidebarTrigger />
-          <Select value={selectedStore} onValueChange={setSelectedStore}>
-            <SelectTrigger className="w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {stores.map((store) => (
-                <SelectItem key={store} value={store}>
-                  {store}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select
-            value={selectedMarketplace}
-            onValueChange={setSelectedMarketplace}
-          >
-            <SelectTrigger className="w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {marketplaces.map((marketplace) => (
-                <SelectItem key={marketplace} value={marketplace}>
-                  {getMarketplaceLabel(marketplace)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <MultiSelect
+            className="w-48"
+            options={[
+              {
+                value: "all-sellers",
+                label: t("header.allSellers", "All Sellers"),
+              },
+              ...(sellers?.map((seller) => ({
+                value: seller.id.toString(),
+                label: seller.name,
+              })) || []),
+            ]}
+            value={selectedSellerIds}
+            onValueChange={handleSellerChange}
+            placeholder={t("header.selectSellers", "Select sellers...")}
+          />
+          <MultiSelect
+            className="w-48"
+            options={availableMarketplaces.map((marketplace) => ({
+              value: marketplace,
+              label: getMarketplaceLabel(marketplace),
+            }))}
+            value={selectedMarketplaces}
+            disabled={true}
+            onValueChange={handleMarketplaceChange}
+            placeholder={t(
+              "header.selectMarketplaces",
+              "Select marketplaces..."
+            )}
+          />
         </div>
         <div>
           <LanguageSwitcher />
@@ -74,4 +155,4 @@ export const Header: React.FC = () => {
       </div>
     </header>
   );
-};
+}

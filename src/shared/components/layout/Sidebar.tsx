@@ -1,9 +1,8 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/components/ui/button";
 import { LogOut, User, ChevronDown, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/utils";
 import { useAuthStore } from "@/features/auth/store/authStore";
 import toast from "react-hot-toast";
 import {
@@ -18,18 +17,21 @@ import {
   useSidebar,
 } from "@/shared/components/ui/sidebar";
 import { navConfig, NavItem } from "@/shared/utils/navConfig";
+import { useState } from "react";
 
 export const NasamSidebar: React.FC = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, logout } = useAuthStore();
-  const [userMenuOpen, setUserMenuOpen] = React.useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { state } = useSidebar();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     try {
-      await logout();
+      logout();
       toast.success(t("auth.logoutSuccess"));
+      navigate("/login");
     } catch {
       toast.error(t("auth.logoutError"));
     }
@@ -57,7 +59,7 @@ export const NasamSidebar: React.FC = () => {
           <SidebarGroupContent>
             <SidebarMenu className="gap-4">
               {navConfig.map((item: NavItem) => (
-                <SidebarMenuItem>
+                <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton asChild isActive={isActive(item.href)}>
                     <Link to={item.href}>
                       <item.icon />

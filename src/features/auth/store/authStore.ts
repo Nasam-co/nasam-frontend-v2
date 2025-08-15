@@ -11,16 +11,20 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  hasInitializedUser: boolean;
 
   // Actions
   setUser: (user: User | null) => void;
   logout: () => void;
   storeUserData: (user: User) => void;
+  fetchAndStoreUser: () => Promise<void>;
+  setHasInitializedUser: (value: boolean) => void;
 
   // Utilities
   getToken: () => string | null;
   hasToken: () => boolean;
   getUserFromStorage: () => User | null;
+  getAllowedSellerIds: () => number[];
 }
 
 // Helper function to get initial user data from localStorage
@@ -36,7 +40,7 @@ const getInitialUserData = (): User | null => {
 
 export const useAuthStore = create<AuthState>()(
   devtools(
-    (set) => {
+    (set, get) => {
       // Get initial user data
       const initialUser = getInitialUserData();
 
@@ -44,6 +48,7 @@ export const useAuthStore = create<AuthState>()(
         user: initialUser,
         isAuthenticated: !!initialUser,
         isLoading: false,
+        hasInitializedUser: false,
 
         setUser: (user) => {
           set({
@@ -101,6 +106,49 @@ export const useAuthStore = create<AuthState>()(
           } catch {
             return null;
           }
+        },
+
+        fetchAndStoreUser: async () => {
+          // Just use the data from cookies - no API call needed
+          const userData = getCookie("user-data");
+          if (userData) {
+            try {
+              const user = JSON.parse(userData) as User;
+              set({
+                user,
+                isAuthenticated: true,
+                isLoading: false,
+                hasInitializedUser: true,
+              });
+            } catch (error) {
+              console.error("Failed to parse user data from cookies:", error);
+              set({
+                user: null,
+                isAuthenticated: false,
+                isLoading: false,
+                hasInitializedUser: true,
+              });
+            }
+          } else {
+            set({
+              user: null,
+              isAuthenticated: false,
+              isLoading: false,
+              hasInitializedUser: true,
+            });
+          }
+        },
+
+        setHasInitializedUser: (value: boolean) => {
+          set({ hasInitializedUser: value });
+        },
+
+        getAllowedSellerIds: () => {
+          const state = get();
+          if (!state.user || !state.user.sellerManagers) {
+            return [];
+          }
+          return state.user.sellerManagers.map(sm => sm.sellerId);
         },
       };
     },

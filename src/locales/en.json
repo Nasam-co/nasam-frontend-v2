@@ -57,7 +57,13 @@
       "lastMonth": "Last Month",
       "thisQuarter": "This Quarter",
       "thisYear": "This Year"
-    }
+    },
+    "dateRange": {
+      "7days": "Last 7 days",
+      "30days": "Last 30 days",
+      "90days": "Last 90 days"
+    },
+    "fromYesterday": "from yesterday"
   },
   "products": {
     "title": "Products",
@@ -103,6 +109,32 @@
     "add": "Add",
     "update": "Update",
     "create": "Create"
+  },
+  "orders": {
+    "title": "Orders",
+    "management": "Orders Management",
+    "filterByStatus": "Filter by status",
+    "allStatus": "All Status",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "processing": "Processing",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "refunded": "Refunded",
+    "orderId": "Order ID",
+    "date": "Date",
+    "customer": "Customer",
+    "status": "Status",
+    "total": "Total",
+    "items": "Items",
+    "actions": "Actions",
+    "viewDetails": "View Details",
+    "refresh": "Refresh",
+    "showingResults": "Showing {{count}} of {{total}} orders",
+    "noResults": "No orders found",
+    "loadingError": "Error Loading Orders",
+    "tryAgain": "Try Again"
   },
   "language": {
     "switchLanguage": "Switch Language",

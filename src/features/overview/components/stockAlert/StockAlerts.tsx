@@ -1,81 +1,46 @@
-import {
-  Phone,
-  Laptop,
-  Watch,
-  Headphones,
-  ShoppingCart,
-  Moon,
-  ShoppingBag,
-} from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { StockAlertCard, type StockAlert } from "./StockAlertCard";
-import { ItemsSection } from "../ItemsSection";
-
-const stockAlerts: StockAlert[] = [
-  {
-    id: "1",
-    name: "iPhone 15 Pro Max",
-    marketplace: "Amazon",
-    stockStatus: "3 left",
-    averageSales: 12,
-    icon: <Phone className="w-5 h-5" />,
-    marketplaceIcon: <ShoppingCart className="w-4 h-4" />,
-    alertLevel: "critical",
-  },
-  {
-    id: "2",
-    name: "MacBook Air M2",
-    marketplace: "Noon",
-    stockStatus: "Out of Stock",
-    averageSales: 8,
-    icon: <Laptop className="w-5 h-5" />,
-    marketplaceIcon: <Moon className="w-4 h-4" />,
-    alertLevel: "critical",
-  },
-  {
-    id: "3",
-    name: "Samsung Watch 6",
-    marketplace: "Trendyol",
-    stockStatus: "5 left",
-    averageSales: 6,
-    icon: <Watch className="w-5 h-5" />,
-    marketplaceIcon: <ShoppingBag className="w-4 h-4" />,
-    alertLevel: "warning",
-  },
-  {
-    id: "4",
-    name: "AirPods 3rd Gen",
-    marketplace: "Amazon",
-    stockStatus: "2 left",
-    averageSales: 15,
-    icon: <Headphones className="w-5 h-5" />,
-    marketplaceIcon: <ShoppingCart className="w-4 h-4" />,
-    alertLevel: "critical",
-  },
-];
-
-const renderStockAlert = (alert: StockAlert) => (
-  <StockAlertCard alert={alert} />
-);
-
-function StockAlertHeader() {
-  const { t } = useTranslation();
-  return (
-    <a href="#" className="text-sm text-blue-600 hover:text-blue-700">
-      {t("overview.viewAll")}
-    </a>
-  );
-}
+import { useDashboardStats } from "../../hooks/useOverview";
+import { StockAlertsHeader } from "./StockAlertsHeader";
+import { StockAlertItem } from "./StockAlertItem";
 
 export function StockAlerts() {
-  const { t } = useTranslation();
+  const { data: dashboardData, isLoading } = useDashboardStats();
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4 flex-grow bg-white p-6 rounded-lg shadow-md">
+        <div className="h-6 bg-gray-200 animate-pulse rounded w-32" />
+        <div className="space-y-2">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-16 bg-gray-200 animate-pulse rounded" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Hide component if no stock alerts data
+  if (
+    !dashboardData?.stockAlerts?.listing ||
+    dashboardData.stockAlerts.listing.length === 0
+  ) {
+    return null;
+  }
+
   return (
-    <ItemsSection
-      title={t("overview.stockAlerts")}
-      headerAction={<StockAlertHeader />}
-      items={stockAlerts}
-      renderItem={renderStockAlert}
-      keyExtractor={(alert) => alert.id}
-    />
+    <div className="space-y-4 flex-grow bg-white p-6 rounded-lg shadow-md">
+      <StockAlertsHeader 
+        totalLowStock={dashboardData?.stockAlerts?.totalLowStock || 0}
+        totalOutOfStock={dashboardData?.stockAlerts?.totalOutOfStock || 0}
+      />
+
+      <div className="space-y-2">
+        {dashboardData.stockAlerts.listing.map((alert, index) => (
+          <StockAlertItem 
+            key={`${alert.name}-${index}`} 
+            alert={alert} 
+          />
+        ))}
+      </div>
+    </div>
   );
 }

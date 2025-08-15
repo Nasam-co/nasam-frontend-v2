@@ -4,6 +4,10 @@ import { AuthGuard } from "@/features/auth/components/AuthGuard";
 import { MainLayout } from "@/shared/components/layout/MainLayout";
 import { OverviewPage } from "@/features/overview/pages/OverviewPage";
 import { LoginPage } from "@/features/auth/pages/LoginPage";
+import OrdersPage from "@/features/orders/pages/OrdersPage";
+import ProductsPage from "@/products-page";
+import MarketplaceAccountsPage from "@/marketplace-accounts-updated";
+
 import ProductsPage from "@/products-page";
 import MarketplaceAccountsPage from "@/marketplace-accounts-updated";
 
@@ -27,8 +31,19 @@ export const AppRouter: React.FC = () => {
 
         {/* Overview page */}
         <Route path="overview" element={<OverviewPage />} />
+
+        {/* Orders page */}
+        <Route path="orders" element={<OrdersPage />} />
+
+        {/* Products page */}
         <Route path="products" element={<ProductsPage />} />
-        <Route path="marketplace-accounts" element={<MarketplaceAccountsPage />} />
+
+        {/* Marketplace Accounts page */}
+        <Route
+          path="marketplace-accounts"
+          element={<MarketplaceAccountsPage />}
+        />
+
       </Route>
 
       {/* Catch all route */}

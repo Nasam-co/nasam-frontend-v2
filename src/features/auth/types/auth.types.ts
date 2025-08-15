@@ -1,12 +1,23 @@
+export interface SellerManager {
+  id: number;
+  userId: number;
+  sellerId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface User {
   id: number;
   email: string;
   name?: string;
   role: "Admin" | "User";
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-  userId: number;
+  createdAt: string;
+  updatedAt: string;
+  userID: number;
+  refreshToken: string;
+  accessToken: string;
+  sellerManagers: SellerManager[];
 }
 
 export interface AuthTokens {
