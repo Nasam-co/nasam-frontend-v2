@@ -3,7 +3,6 @@ import type {
   OrderOverviewResponse,
   OrdersOverviewRequest,
   OrderOverview,
-  OrderStatusCountsRequest,
   OrderStatusCountsResponse,
 } from "../types";
 

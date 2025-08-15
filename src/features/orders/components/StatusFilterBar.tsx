@@ -50,7 +50,7 @@ export default function StatusFilterBar({
   };
 
   const { data: statusCounts, isLoading } = useQuery({
-    queryKey: ["orderStatusCounts"],
+    queryKey: ["orderStatusCounts", statusCountsFilters],
     queryFn: () => OrdersService.getOrderStatusCounts(),
     staleTime: 5 * 60 * 1000,
   });

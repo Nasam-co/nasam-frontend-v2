@@ -57,12 +57,15 @@ export function LineRevenueChart() {
   // }
 
   // Extract labels from revenue trend data
-  const labels = revenueTrend.map((item) =>
-    new Date(item.date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    })
-  );
+  const labels =
+    revenueTrend.length > 0 && revenueTrend[0].trends
+      ? revenueTrend[0].trends.map((trend) =>
+          new Date(trend.date).toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          })
+        )
+      : [];
 
   // Create datasets based on available marketplaces or use single revenue dataset
   const datasets =
@@ -94,9 +97,12 @@ export function LineRevenueChart() {
 
           return {
             label: marketplace.name,
-            data: revenueTrend.map(
-              (item) => item.revenue / marketplaces.length
-            ), // Distribute revenue evenly for demo
+            data:
+              revenueTrend.length > 0 && revenueTrend[0].trends
+                ? revenueTrend[0].trends.map(
+                    (trend) => trend.totalRevenue / marketplaces.length
+                  )
+                : [], // Distribute revenue evenly for demo
             borderColor: color.border,
             backgroundColor: color.background,
             tension: 0.1,
@@ -105,7 +111,10 @@ export function LineRevenueChart() {
       : [
           {
             label: "Revenue",
-            data: revenueTrend.map((item) => item.revenue),
+            data:
+              revenueTrend.length > 0 && revenueTrend[0].trends
+                ? revenueTrend[0].trends.map((trend) => trend.totalRevenue)
+                : [],
             borderColor: "rgb(75, 192, 192)",
             backgroundColor: "rgba(75, 192, 192, 0.2)",
             tension: 0.1,
