@@ -7,6 +7,7 @@ import { LoginPage } from "@/features/auth/pages/LoginPage";
 import OrdersPage from "@/features/orders/pages/OrdersPage";
 import ProductsPage from "@/products-page";
 import MarketplaceAccountsPage from "@/marketplace-accounts-updated";
+
 import ProductsPage from "@/products-page";
 import MarketplaceAccountsPage from "@/marketplace-accounts-updated";
 
@@ -42,6 +43,7 @@ export const AppRouter: React.FC = () => {
           path="marketplace-accounts"
           element={<MarketplaceAccountsPage />}
         />
+
       </Route>
 
       {/* Catch all route */}
