@@ -1,7 +1,7 @@
 import { DataTable } from "@/shared/components/ui/data-table";
 import { ordersColumns } from "../components/columns";
 import { useOrdersTableData } from "../hooks/useOrdersTableData";
-import { OrdersOverviewRequest } from "../types";
+import { OrdersOverviewRequest, ShipmentStatus } from "../types";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import StatusFilterBar from "../components/StatusFilterBar";
