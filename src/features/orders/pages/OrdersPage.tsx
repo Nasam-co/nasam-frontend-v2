@@ -4,9 +4,15 @@ import { useOrdersTableData } from "../hooks/useOrdersTableData";
 import { OrdersOverviewRequest } from "../types";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import StatusFilterBar from "../components/StatusFilterBar";
+import { useSellersStore } from "@/shared/store/sellersStore";
 
 export default function OrdersPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const selectedSellerIds = useSellersStore((state) => state.selectedSellerIds);
+  const getSelectedSellerIds = useSellersStore(
+    (state) => state.getSelectedSellerIds
+  );
 
   // Get initial values from URL or use defaults
   const getPageFromUrl = () => {
@@ -19,17 +25,30 @@ export default function OrdersPage() {
     return limitParam ? parseInt(limitParam, 10) : 10;
   };
 
+  const getStatusFromUrl = (): ShipmentStatus | undefined => {
+    const statusParam = searchParams.get("status");
+    return statusParam as ShipmentStatus | undefined;
+  };
+
   const [params, setParams] = useState<OrdersOverviewRequest>({
     page: getPageFromUrl(),
     limit: getLimitFromUrl(),
+    status: getStatusFromUrl(),
   });
 
   useEffect(() => {
+    const actualSellerIds = getSelectedSellerIds();
+    const sellerIds = actualSellerIds.includes("all-sellers")
+      ? undefined
+      : actualSellerIds.map(Number);
+
     setParams({
       page: getPageFromUrl(),
       limit: getLimitFromUrl(),
+      status: getStatusFromUrl(),
+      sellerIds: sellerIds,
     });
-  }, [searchParams]);
+  }, [searchParams, selectedSellerIds, getSelectedSellerIds]);
 
   const {
     data,
@@ -59,6 +78,12 @@ export default function OrdersPage() {
       newSearchParams.delete("limit");
     }
 
+    if (updatedParams.status) {
+      newSearchParams.set("status", updatedParams.status);
+    } else {
+      newSearchParams.delete("status");
+    }
+
     setSearchParams(newSearchParams);
   };
 
@@ -68,6 +93,10 @@ export default function OrdersPage() {
 
   const handleLimitChange = (newLimit: number) => {
     updateUrlParams({ limit: newLimit, page: 1 });
+  };
+
+  const handleStatusChange = (status?: ShipmentStatus) => {
+    updateUrlParams({ status, page: 1 });
   };
 
   if (error) {
@@ -82,6 +111,11 @@ export default function OrdersPage() {
 
   return (
     <div className="container mx-auto">
+      <StatusFilterBar
+        selectedStatus={params.status}
+        onStatusChange={handleStatusChange}
+        filters={params}
+      />
       <DataTable
         columns={ordersColumns}
         data={data}

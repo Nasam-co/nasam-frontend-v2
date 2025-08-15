@@ -4,6 +4,7 @@ import { ShipmentStatus, OrderStatusCountsRequest } from "../types";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useSellersStore } from "@/shared/store/sellersStore";
+import { useSellersStore } from "@/shared/store/sellersStore";
 
 interface StatusFilterBarProps {
   selectedStatus?: ShipmentStatus;
@@ -12,6 +13,12 @@ interface StatusFilterBarProps {
 }
 
 const STATUS_COLORS: Record<ShipmentStatus, string> = {
+  Created: "bg-gray-100 text-gray-800 hover:bg-gray-200",
+  Packed: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
+  Shipped: "bg-blue-100 text-blue-800 hover:bg-blue-200",
+  Delivered: "bg-green-100 text-green-800 hover:bg-green-200",
+  Cancelled: "bg-red-100 text-red-800 hover:bg-red-200",
+  Returned: "bg-orange-100 text-orange-800 hover:bg-orange-200",
   Created: "bg-gray-100 text-gray-800 hover:bg-gray-200",
   Packed: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
   Shipped: "bg-blue-100 text-blue-800 hover:bg-blue-200",
@@ -27,23 +34,37 @@ const STATUS_LABELS: Record<ShipmentStatus, string> = {
   Delivered: "Delivered",
   Cancelled: "Cancelled",
   Returned: "Returned",
+  Created: "Created",
+  Packed: "Packed",
+  Shipped: "Shipped",
+  Delivered: "Delivered",
+  Cancelled: "Cancelled",
+  Returned: "Returned",
 };
 
-export default function StatusFilterBar({ selectedStatus, onStatusChange, filters = {} }: StatusFilterBarProps) {
-  const getSelectedSellerIds = useSellersStore((state) => state.getSelectedSellerIds);
-  
+export default function StatusFilterBar({
+  selectedStatus,
+  onStatusChange,
+  filters = {},
+}: StatusFilterBarProps) {
+  const getSelectedSellerIds = useSellersStore(
+    (state) => state.getSelectedSellerIds
+  );
+
   // Create filters object that includes seller IDs
   const statusCountsFilters = {
     ...filters,
     sellerIds: (() => {
       const actualSellerIds = getSelectedSellerIds();
-      return actualSellerIds.includes("all-sellers") ? undefined : actualSellerIds.map(Number);
+      return actualSellerIds.includes("all-sellers")
+        ? undefined
+        : actualSellerIds.map(Number);
     })(),
   };
 
   const { data: statusCounts, isLoading } = useQuery({
     queryKey: ["orderStatusCounts", statusCountsFilters],
-    queryFn: () => OrdersService.getOrderStatusCounts(statusCountsFilters),
+    queryFn: () => OrdersService.getOrderStatusCounts(),
     staleTime: 5 * 60 * 1000,
   });
 
@@ -57,7 +78,8 @@ export default function StatusFilterBar({ selectedStatus, onStatusChange, filter
     );
   }
 
-  const totalCount = statusCounts?.reduce((sum, item) => sum + item.count, 0) || 0;
+  const totalCount =
+    statusCounts?.reduce((sum, item) => sum + item.count, 0) || 0;
 
   return (
     <div className="flex flex-wrap gap-2 p-4 bg-white border rounded-lg">
@@ -75,14 +97,18 @@ export default function StatusFilterBar({ selectedStatus, onStatusChange, filter
       </Button>
 
       {/* Status Filter Buttons */}
-      {statusCounts?.map((statusCount) => (
+      {statusCounts?.map((statusCount, index) => (
         <Button
-          key={statusCount.status}
-          variant={selectedStatus === statusCount.status ? "default" : "outline"}
+          key={`${statusCount.status}-${index}`}
+          variant={
+            selectedStatus === statusCount.status ? "default" : "outline"
+          }
           size="sm"
           onClick={() => onStatusChange(statusCount.status)}
           className={`flex items-center gap-2 ${
-            selectedStatus === statusCount.status ? '' : STATUS_COLORS[statusCount.status]
+            selectedStatus === statusCount.status
+              ? ""
+              : STATUS_COLORS[statusCount.status]
           }`}
         >
           {STATUS_LABELS[statusCount.status]}

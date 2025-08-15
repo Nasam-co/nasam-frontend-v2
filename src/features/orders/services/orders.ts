@@ -15,21 +15,23 @@ export class OrdersService {
 
     Object.entries(params).forEach(([key, value]) => {
       if (value === undefined || value === null) return;
-      
+
       switch (key) {
-        case 'sellerIds':
+        case "sellerIds":
           if (Array.isArray(value) && value.length > 0) {
-            queryParams.sellerIds = value.join(",");
+            queryParams.sellerId = value.join(",");
           }
           break;
-        case 'excludedMarketplacesIds':
+        case "excludedMarketplacesIds":
           if (Array.isArray(value) && value.length > 0) {
             queryParams.excludedMarketplacesIds = value.join(",");
           }
           break;
+        case "status":
+          queryParams.status = value.toLowerCase();
+          break;
         default:
           queryParams[key] = value;
-          break;
       }
     });
 
@@ -44,36 +46,9 @@ export class OrdersService {
     return response.data;
   }
 
-  static async getOrderStatusCounts(
-    params: OrderStatusCountsRequest
-  ): Promise<OrderStatusCountsResponse> {
-    const queryParams: Record<string, string | number> = {};
-
-    Object.entries(params).forEach(([key, value]) => {
-      if (value === undefined || value === null) return;
-      
-      switch (key) {
-        case 'sellerIds':
-          if (Array.isArray(value) && value.length > 0) {
-            queryParams.sellerIds = value.join(",");
-          }
-          break;
-        case 'excludedMarketplacesIds':
-          if (Array.isArray(value) && value.length > 0) {
-            queryParams.excludedMarketplacesIds = value.join(",");
-          }
-          break;
-        default:
-          queryParams[key] = value;
-          break;
-      }
-    });
-
+  static async getOrderStatusCounts(): Promise<OrderStatusCountsResponse> {
     const response = await apiClient.get<OrderStatusCountsResponse>(
-      "orders/status-counts",
-      {
-        params: queryParams,
-      }
+      "orders/status-counts"
     );
     return response.data;
   }
