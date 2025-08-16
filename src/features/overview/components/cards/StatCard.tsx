@@ -26,7 +26,7 @@ export function StatCard({
   const { isRTL } = useLanguage();
   return (
     <Card>
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-row items-center justify-between px-4">
         <div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <div className="flex flex-col space-y-1">

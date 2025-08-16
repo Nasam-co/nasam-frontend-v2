@@ -1,39 +1,28 @@
 import { DataTable } from "@/shared/components/ui/data-table";
-import { ordersColumns } from "../components/columns";
+import { useOrdersColumns } from "../components/columns";
 import { useOrdersTableData } from "../hooks/useOrdersTableData";
 import { OrdersOverviewRequest, ShipmentStatus } from "../types";
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import StatusFilterBar from "../components/StatusFilterBar";
 import { useSellersStore } from "@/shared/store/sellersStore";
+import { useTranslation } from "react-i18next";
 
 export default function OrdersPage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
+  const columns = useOrdersColumns();
   const selectedSellerIds = useSellersStore((state) => state.selectedSellerIds);
   const getSelectedSellerIds = useSellersStore(
     (state) => state.getSelectedSellerIds
   );
-
-  // Get initial values from URL or use defaults
-  const getPageFromUrl = () => {
-    const pageParam = searchParams.get("page");
-    return pageParam ? parseInt(pageParam, 10) : 1;
-  };
-
-  const getLimitFromUrl = () => {
-    const limitParam = searchParams.get("limit");
-    return limitParam ? parseInt(limitParam, 10) : 10;
-  };
-
-  const getStatusFromUrl = (): ShipmentStatus | undefined => {
-    const statusParam = searchParams.get("status");
-    return statusParam as ShipmentStatus | undefined;
-  };
+  const getDateRangeParams = useSellersStore(
+    (state) => state.getDateRangeParams
+  );
+  const selectedDateRange = useSellersStore((state) => state.selectedDateRange);
+  const customDateRange = useSellersStore((state) => state.customDateRange);
 
   const [params, setParams] = useState<OrdersOverviewRequest>({
-    page: getPageFromUrl(),
-    limit: getLimitFromUrl(),
-    status: getStatusFromUrl(),
+    page: 1,
+    limit: 10,
   });
 
   useEffect(() => {
@@ -42,13 +31,21 @@ export default function OrdersPage() {
       ? undefined
       : actualSellerIds.map(Number);
 
-    setParams({
-      page: getPageFromUrl(),
-      limit: getLimitFromUrl(),
-      status: getStatusFromUrl(),
+    const dateRange = getDateRangeParams();
+
+    setParams((prev) => ({
+      ...prev,
       sellerIds: sellerIds,
-    });
-  }, [searchParams, selectedSellerIds, getSelectedSellerIds]);
+      startDate: dateRange.startDate,
+      endDate: dateRange.endDate,
+    }));
+  }, [
+    selectedSellerIds,
+    getSelectedSellerIds,
+    getDateRangeParams,
+    selectedDateRange,
+    customDateRange,
+  ]);
 
   const {
     data,
@@ -61,42 +58,16 @@ export default function OrdersPage() {
     prefetchPreviousPage,
   } = useOrdersTableData(params);
 
-  const updateUrlParams = (newParams: Partial<OrdersOverviewRequest>) => {
-    const updatedParams = { ...params, ...newParams };
-    const newSearchParams = new URLSearchParams(searchParams);
-
-    // Only set non-default values in URL
-    if (updatedParams.page && updatedParams.page !== 1) {
-      newSearchParams.set("page", updatedParams.page.toString());
-    } else {
-      newSearchParams.delete("page");
-    }
-
-    if (updatedParams.limit && updatedParams.limit !== 10) {
-      newSearchParams.set("limit", updatedParams.limit.toString());
-    } else {
-      newSearchParams.delete("limit");
-    }
-
-    if (updatedParams.status) {
-      newSearchParams.set("status", updatedParams.status);
-    } else {
-      newSearchParams.delete("status");
-    }
-
-    setSearchParams(newSearchParams);
-  };
-
   const handlePageChange = (newPage: number) => {
-    updateUrlParams({ page: newPage });
+    setParams((prev) => ({ ...prev, page: newPage }));
   };
 
   const handleLimitChange = (newLimit: number) => {
-    updateUrlParams({ limit: newLimit, page: 1 });
+    setParams((prev) => ({ ...prev, limit: newLimit, page: 1 }));
   };
 
   const handleStatusChange = (status?: ShipmentStatus) => {
-    updateUrlParams({ status, page: 1 });
+    setParams((prev) => ({ ...prev, status, page: 1 }));
   };
 
   if (error) {
@@ -111,13 +82,21 @@ export default function OrdersPage() {
 
   return (
     <div className="container mx-auto">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">{t("navigation.orders")}</h1>
+        <p className="text-lg text-muted-foreground">
+          {t("orders.description")}
+        </p>
+      </div>
+
       <StatusFilterBar
         selectedStatus={params.status}
         onStatusChange={handleStatusChange}
         filters={params}
       />
       <DataTable
-        columns={ordersColumns}
+        columns={columns}
         data={data}
         isLoading={isLoading}
         pagination={{

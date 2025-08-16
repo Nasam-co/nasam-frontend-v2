@@ -1,115 +1,104 @@
-import { Checkbox } from "@/shared/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/shared/components/ui/data-table-column-header";
 import { ColumnDef } from "@tanstack/react-table";
 import { OrderTableRow } from "../types";
+import { ShipmentStatus } from "../types/orders.types";
+import { STATUS_COLORS } from "../constants/status-colors";
+import { formatDistanceToNow } from "date-fns";
+import { ar, enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
+import Riyal from "@/shared/components/common/Riyal";
 
-export const ordersColumns: ColumnDef<OrderTableRow>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Order ID" />
-    ),
-    accessorKey: "orderIdInMarketplace",
-  },
-  {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Date" />
-    ),
-    accessorKey: "orderDate",
-  },
-  {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Marketplace" />
-    ),
-    accessorKey: "marketplace",
-  },
-  {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Fulfillment" />
-    ),
-    accessorKey: "fulfillmentModel",
-  },
-  {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Status" />
-    ),
-    accessorKey: "orderStatus",
-    cell: ({ row }) => {
-      const status = row.getValue("orderStatus") as string;
-      return (
-        <span
-          className={`px-2 py-1 rounded-full text-xs font-medium ${
-            status === "DELIVERED"
-              ? "bg-green-100 text-green-800"
-              : status === "SHIPPED"
-              ? "bg-blue-100 text-blue-800"
-              : status === "PROCESSING"
-              ? "bg-yellow-100 text-yellow-800"
-              : status === "CANCELLED"
-              ? "bg-red-100 text-red-800"
-              : "bg-gray-100 text-gray-800"
-          }`}
-        >
-          {status}
-        </span>
-      );
-    },
-  },
-  {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Total" />
-    ),
-    accessorKey: "totalAmount",
-    cell: ({ row }) => {
-      const amount = row.getValue("totalAmount") as number;
-      return (
-        <div className="flex items-center gap-2">
-          <img
-            src="/assets/images/riyal.png"
-            alt="Currency"
-            width={16}
-            height={16}
-          />
-          <span className="text-sm font-medium">{amount}</span>
-        </div>
-      );
-    },
-  },
-  {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Items" />
-    ),
-    accessorKey: "items",
-  },
-  {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tracking" />
-    ),
-    accessorKey: "trackingNumber",
-    cell: ({ row }) => {
-      const trackingNumber = row.getValue("trackingNumber") as string;
-      return <div>{trackingNumber || "N/A"}</div>;
-    },
-  },
-];
+export const useOrdersColumns = (): ColumnDef<OrderTableRow>[] => {
+  const { i18n, t } = useTranslation();
+  const currentLocale = i18n.language === "ar" ? ar : enUS;
+
+  return useMemo(
+    () => [
+      {
+        header: t("orders.orderId"),
+        accessorKey: "orderIdInMarketplace",
+        enableSorting: false,
+      },
+      {
+        header: t("orders.date"),
+        accessorKey: "orderDate",
+        enableSorting: false,
+        cell: ({ row }) => {
+          const date = row.getValue("orderDate") as string;
+          const timeAgo = formatDistanceToNow(new Date(date), {
+            locale: currentLocale,
+            addSuffix: true,
+          });
+          return <div>{timeAgo}</div>;
+        },
+      },
+      {
+        header: t("orders.marketplace"),
+        accessorKey: "marketplace",
+        enableSorting: false,
+        cell: ({ row }) => {
+          const marketplace = row.getValue("marketplace") as string;
+          const marketplaceLower = marketplace.toLowerCase();
+          return (
+            <img
+              src={`/assets/images/marketplaces/${marketplaceLower}.png`}
+              alt={marketplace}
+              width={60}
+              height={60}
+              className="object-contain"
+            />
+          );
+        },
+      },
+      {
+        header: t("orders.fulfillment"),
+        accessorKey: "fulfillmentModel",
+        enableSorting: false,
+      },
+      {
+        header: t("orders.status"),
+        accessorKey: "orderStatus",
+        enableSorting: false,
+        cell: ({ row }) => {
+          const status = row.getValue("orderStatus") as ShipmentStatus;
+          return (
+            <button
+              className={`px-2 py-1 rounded-full text-xs w-fit font-medium ${STATUS_COLORS[status]}`}
+            >
+              {t(`orders.${status.toLowerCase()}`)}
+            </button>
+          );
+        },
+      },
+      {
+        header: t("orders.total"),
+        accessorKey: "totalAmount",
+        enableSorting: false,
+        cell: ({ row }) => {
+          const amount = row.getValue("totalAmount") as number;
+          return (
+            <div className="flex w-fit items-center justify-center gap-2">
+              <Riyal />
+              <span className="text-sm font-medium">{amount}</span>
+            </div>
+          );
+        },
+      },
+      {
+        header: t("orders.items"),
+        accessorKey: "items",
+        enableSorting: false,
+      },
+      {
+        header: t("orders.tracking"),
+        accessorKey: "trackingNumber",
+        enableSorting: false,
+        cell: ({ row }) => {
+          const trackingNumber = row.getValue("trackingNumber") as string;
+          return <div>{trackingNumber || t("orders.notAvailable")}</div>;
+        },
+      },
+    ],
+    [currentLocale, t]
+  );
+};

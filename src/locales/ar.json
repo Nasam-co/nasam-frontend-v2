@@ -27,6 +27,7 @@
   },
   "overview": {
     "title": "لوحة التحكم",
+    "description": "راقب أداء عملك عبر جميع البائعين والمتاجر الإلكترونية",
     "totalRevenue": "إجمالي الإيرادات",
     "totalOrders": "إجمالي الطلبات",
     "totalCustomers": "إجمالي العملاء",
@@ -45,6 +46,12 @@
     "readyToShip": "{{count}} جاهز للشحن",
     "acrossMarketplaces": "عبر {{count}} متاجر إلكترونية",
     "revenueChartByMarketplace": "الإيرادات بالمتاجر الإلكترونية",
+    "allProductsStocked": "جميع المنتجات متوفرة في المخزون!",
+    "noLowStockItems": "لا توجد عناصر منخفضة المخزون أو نافدة من المخزون في الوقت الحالي.",
+    "unitsSold": "الوحدات المباعة",
+    "totalRevenueCap": "إجمالي الإيرادات",
+    "unitsSoldCount": "{{count}} وحدة مباعة",
+    "revenueAmount": "{{amount}} ريال سعودي",
     "topPerformers": {
       "title": "أفضل المنتجات أداءً",
       "thisWeek": "هذا الأسبوع",
@@ -59,19 +66,33 @@
       "30days": "آخر 30 يوم",
       "90days": "آخر 90 يوم"
     },
-    "fromYesterday": "من أمس"
+    "fromYesterday": "من أمس",
+    "revenueChartDescription": "عرض اتجاهات الإيرادات خلال الفترة الزمنية المحددة",
+    "noRevenueData": "لا توجد بيانات إيرادات متاحة",
+    "noRevenueDataDescription": "ستظهر اتجاهات الإيرادات هنا بمجرد حصولك على مبيعات",
+    "revenue": "الإيرادات"
   },
   "marketplace-accounts": {
-    "title": "حسابات المتاجر"
-  },
-  "marketplace-accounts": {
-    "title": "حسابات المتاجر"
-  },
-  "marketplace-accounts": {
-    "title": "حسابات المتاجر"
+    "title": "حسابات المتاجر",
+    "description": "اربط وأدر حسابات المتاجر الإلكترونية",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "pending": "قيد الانتظار",
+    "failed": "فشل",
+    "fixConnection": "إصلاح الاتصال",
+    "relinkProducts": "إعادة ربط المنتجات",
+    "connectAndLink": "اتصال وربط المنتجات",
+    "yourSellerId": "معرف البائع الخاص بك",
+    "yourApiKey": "مفتاح API الخاص بك",
+    "yourApiSecret": "سر API الخاص بك",
+    "connecting": "جاري الاتصال...",
+    "done": "تم!",
+    "oauthRequired": "OAuth مطلوب",
+    "apiKeyRequired": "مفتاح API مطلوب"
   },
   "products": {
     "title": "المنتجات",
+    "description": "أدر كتالوج منتجاتك عبر جميع المتاجر الإلكترونية",
     "name": "اسم المنتج",
     "category": "الفئة",
     "price": "السعر",
@@ -80,10 +101,30 @@
     "actions": "الإجراءات",
     "addProduct": "إضافة منتج",
     "edit": "تحرير",
-    "delete": "حذف"
+    "delete": "حذف",
+    "importProducts": "استيراد المنتجات",
+    "downloadTemplate": "تنزيل القالب",
+    "saveAllChanges": "حفظ جميع التغييرات",
+    "cancelAll": "إلغاء الكل",
+    "refresh": "تحديث",
+    "synced": "متزامن",
+    "pending": "قيد الانتظار",
+    "failed": "فشل",
+    "unknown": "غير معروف",
+    "masterStock": "المخزون الرئيسي",
+    "totalUnitsSold": "إجمالي الوحدات المباعة",
+    "totalRevenue": "إجمالي الإيرادات",
+    "allSystemsOperational": "جميع الأنظمة تعمل بشكل طبيعي",
+    "someSyncIssues": "تم اكتشاف بعض مشاكل التزامن",
+    "syncFailures": "فشل في التزامن",
+    "getStartedImport": "ابدأ بإستيراد المنتجات لأي من بائعيك",
+    "units": "وحدات",
+    "optional": "اختياري",
+    "sar": "ريال سعودي"
   },
   "header": {
     "allMarketplaces": "جميع المتاجر الإلكترونية",
+    "allSellers": "جميع البائعين",
     "amazon": "أمازون",
     "trendyol": "ترينديول",
     "noon": "نون"
@@ -103,13 +144,28 @@
     "delete": "حذف",
     "add": "إضافة",
     "update": "تحديث",
-    "create": "إنشاء"
+    "create": "إنشاء",
+    "selected": "محدد",
+    "rowsPerPage": "صفوف لكل صفحة",
+    "page": "صفحة",
+    "of": "من",
+    "previous": "السابق",
+    "next": "التالي",
+    "first": "الأول",
+    "last": "الأخير",
+    "noData": "لا توجد بيانات متاحة",
+    "items": "عناصر",
+    "left": "متبقي",
+    "seller": "البائع",
+    "saving": "جاري الحفظ..."
   },
   "orders": {
     "title": "الطلبات",
+    "description": "تتبع وإدارة الطلبات من جميع المتاجر الإلكترونية المتصلة",
     "management": "إدارة الطلبات",
     "filterByStatus": "تصفية حسب الحالة",
     "allStatus": "كل الحالات",
+    "allOrders": "كل الطلبات",
     "pending": "قيد الانتظار",
     "confirmed": "مؤكد",
     "processing": "قيد المعالجة",
@@ -117,6 +173,9 @@
     "delivered": "تم التسليم",
     "cancelled": "ملغى",
     "refunded": "مسترد",
+    "created": "تم الإنشاء",
+    "packed": "معبأ",
+    "returned": "مرتجع",
     "orderId": "رقم الطلب",
     "date": "التاريخ",
     "customer": "العميل",
@@ -129,7 +188,13 @@
     "showingResults": "عرض {{count}} من {{total}} طلب",
     "noResults": "لم يتم العثور على طلبات",
     "loadingError": "خطأ في تحميل الطلبات",
-    "tryAgain": "حاول مرة أخرى"
+    "tryAgain": "حاول مرة أخرى",
+    "marketplace": "المتجر الإلكتروني",
+    "fulfillment": "التنفيذ",
+    "tracking": "التتبع",
+    "selectAll": "تحديد الكل",
+    "selectRow": "تحديد الصف",
+    "notAvailable": "غير متوفر"
   },
   "language": {
     "switchLanguage": "تغيير اللغة",

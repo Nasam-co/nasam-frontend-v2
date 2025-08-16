@@ -21,7 +21,6 @@ export function TopPerformers() {
     );
   }
 
-  // Handle empty state - hide component if no data
   if (
     !dashboardData?.topPerformers ||
     dashboardData.topPerformers.length === 0
@@ -32,12 +31,12 @@ export function TopPerformers() {
   return (
     <div className="space-y-4 flex-grow bg-white p-6 rounded-lg shadow-md">
       <TopPerformersHeader />
-      
+
       <div className="space-y-2">
         {dashboardData.topPerformers.map((performer, index) => (
-          <TopPerformerItem 
-            key={`${performer.listing.sku}-${index}`} 
-            performer={performer} 
+          <TopPerformerItem
+            key={`${performer.listing.id}-${index}`}
+            performer={performer}
           />
         ))}
       </div>

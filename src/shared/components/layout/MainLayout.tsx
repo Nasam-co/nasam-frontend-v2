@@ -15,7 +15,11 @@ import Header from "./Header";
 export const MainLayout: React.FC = () => {
   const { isRTL } = useLanguage();
   const { isLoading, sellers } = useSellers();
-  const { fetchAndStoreUser, hasInitializedUser, isLoading: authLoading } = useAuthStore();
+  const {
+    fetchAndStoreUser,
+    hasInitializedUser,
+    isLoading: authLoading,
+  } = useAuthStore();
 
   // Fetch user on first load/refresh
   useEffect(() => {
@@ -31,14 +35,14 @@ export const MainLayout: React.FC = () => {
           <NasamSidebar />
         </Sidebar>
         <SidebarInset>
-          {(isLoading || authLoading || !hasInitializedUser) ? (
+          {isLoading || authLoading || !hasInitializedUser ? (
             <div className="flex justify-center items-center h-full">
               <Loader2 className="w-10 h-10 animate-spin" />
             </div>
           ) : (
             <>
               <Header sellers={sellers} />
-              <main className="flex-1 p-6">
+              <main className="mx-auto p-6 w-full max-w-7xl">
                 <Outlet />
               </main>
             </>

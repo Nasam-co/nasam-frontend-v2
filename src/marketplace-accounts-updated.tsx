@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// import { useTranslation } from "react-i18next"; // Ready for localization
 import {
   Upload,
   ShoppingCart,
@@ -156,6 +157,8 @@ const sellers: Seller[] = [
 ];
 
 const MarketplaceAccountsPage = () => {
+  // Note: Translation ready - add t() calls as needed
+  // const { t } = useTranslation();
   // Demo configuration
   const [demoState, setDemoState] = useState<DemoState>("empty");
   const [showDemoControls, setShowDemoControls] = useState(true);

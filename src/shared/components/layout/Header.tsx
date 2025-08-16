@@ -5,6 +5,8 @@ import { MultiSelect } from "@/shared/components/ui/multi-select";
 import { LanguageSwitcher } from "@/shared/components/common/LanguageSwitcher";
 import { Seller } from "@/shared/types/Sellers.type";
 import { useSellersStore } from "@/shared/store/sellersStore";
+import { DateRangeTabs } from "@/features/overview/components/DateRangeTabs";
+import { DateWithRange } from "@/features/overview/components/DateWithRange";
 
 // Remove hardcoded marketplaces - will be dynamically generated from sellers
 
@@ -17,7 +19,7 @@ export default function Header({ sellers }: { sellers?: Seller[] }) {
     setSelectedMarketplaces,
   } = useSellersStore();
 
-  // Generate available marketplaces dynamically from user's allowed sellers
+  // Generate available marketplaces dynamically based on selected sellers
   const availableMarketplaces = useMemo(() => {
     if (!sellers || sellers.length === 0) {
       return ["all-marketplaces"];
@@ -25,21 +27,38 @@ export default function Header({ sellers }: { sellers?: Seller[] }) {
 
     const marketplaceSet = new Set<string>(["all-marketplaces"]);
 
-    sellers.forEach((seller) => {
-      seller.marketplaceAccounts?.forEach((account) => {
-        if (account.marketplace?.name) {
-          marketplaceSet.add(account.marketplace.name.toLowerCase());
-        }
+    // If "all-sellers" is selected, show all marketplaces from all sellers
+    if (selectedSellerIds.includes("all-sellers")) {
+      sellers.forEach((seller) => {
+        seller.marketplaceAccounts?.forEach((account) => {
+          if (account.marketplace?.name) {
+            marketplaceSet.add(account.marketplace.name.toLowerCase());
+          }
+        });
       });
-    });
+    } else {
+      // Only show marketplaces from selected sellers
+      const selectedSellers = sellers.filter((seller) =>
+        selectedSellerIds.includes(seller.id.toString())
+      );
+
+      selectedSellers.forEach((seller) => {
+        seller.marketplaceAccounts?.forEach((account) => {
+          if (account.marketplace?.name) {
+            marketplaceSet.add(account.marketplace.name.toLowerCase());
+          }
+        });
+      });
+    }
 
     return Array.from(marketplaceSet);
-  }, [sellers]);
+  }, [sellers, selectedSellerIds]);
 
   const handleSellerChange = (values: string[]) => {
     // If no values selected, default to "all-sellers"
     if (values.length === 0) {
       setSelectedSellerIds(["all-sellers"]);
+      setSelectedMarketplaces(["all-marketplaces"]); // Reset marketplaces when sellers change
       return;
     }
 
@@ -50,6 +69,7 @@ export default function Header({ sellers }: { sellers?: Seller[] }) {
     ) {
       // Only keep "all-sellers"
       setSelectedSellerIds(["all-sellers"]);
+      setSelectedMarketplaces(["all-marketplaces"]); // Reset marketplaces when sellers change
       return;
     }
 
@@ -60,11 +80,13 @@ export default function Header({ sellers }: { sellers?: Seller[] }) {
     ) {
       // Remove "all-sellers" and keep only the specific sellers
       setSelectedSellerIds(values.filter((id) => id !== "all-sellers"));
+      setSelectedMarketplaces(["all-marketplaces"]); // Reset marketplaces when sellers change
       return;
     }
 
     // Normal selection
     setSelectedSellerIds(values);
+    setSelectedMarketplaces(["all-marketplaces"]); // Reset marketplaces when sellers change
   };
 
   const handleMarketplaceChange = (values: string[]) => {
@@ -123,7 +145,7 @@ export default function Header({ sellers }: { sellers?: Seller[] }) {
             options={[
               {
                 value: "all-sellers",
-                label: t("header.allSellers", "All Sellers"),
+                label: t("header.allSellers"),
               },
               ...(sellers?.map((seller) => ({
                 value: seller.id.toString(),
@@ -141,13 +163,17 @@ export default function Header({ sellers }: { sellers?: Seller[] }) {
               label: getMarketplaceLabel(marketplace),
             }))}
             value={selectedMarketplaces}
-            disabled={true}
+            disabled={false}
             onValueChange={handleMarketplaceChange}
             placeholder={t(
               "header.selectMarketplaces",
               "Select marketplaces..."
             )}
           />
+          <div className="flex items-center gap-2">
+            <DateWithRange />
+            <DateRangeTabs />
+          </div>
         </div>
         <div>
           <LanguageSwitcher />

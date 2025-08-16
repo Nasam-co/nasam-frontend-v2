@@ -24,7 +24,7 @@ export function DateRangeTabs() {
       onValueChange={handleDateRangeChange}
       className="w-auto"
     >
-      <TabsList>
+      <TabsList className="">
         <TabsTrigger value="7days">
           {t("overview.dateRange.7days", "Last 7 days")}
         </TabsTrigger>
