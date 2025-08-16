@@ -59,6 +59,7 @@ export interface StockAlertItem {
   marketplace: string;
   availableQuantity: number;
   imageUrl: string | null;
+  sellerName: string;
 }
 
 export interface StockAlerts {
@@ -69,9 +70,17 @@ export interface StockAlerts {
 
 export interface TopPerformer {
   listing: {
+    id: number;
+    name: string;
     sku: string;
+    marketplace: {
+      name: string;
+    };
+    imageUrl: string | null;
   };
+  totalRevenue: number;
   unitsSold: number;
+  sellerName: string;
 }
 
 export interface DashboardStats {

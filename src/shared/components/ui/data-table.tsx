@@ -49,7 +49,6 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -61,14 +60,12 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
     manualPagination: !!pagination,
     pageCount: pagination ? -1 : undefined,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      rowSelection,
       pagination: pagination
         ? {
             pageIndex: pagination.page - 1,
@@ -87,10 +84,10 @@ export function DataTable<TData, TValue>({
         <Table className="bg-white">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow className="" key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="">
                       {header.isPlaceholder
                         ? null
                         : flexRender(

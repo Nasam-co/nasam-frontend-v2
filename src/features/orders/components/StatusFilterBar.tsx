@@ -4,6 +4,10 @@ import { ShipmentStatus, OrderStatusCountsRequest } from "../types";
 import { Button } from "@/shared/components/ui/button";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import { useSellersStore } from "@/shared/store/sellersStore";
+import { useTranslation } from "react-i18next";
+import {
+  STATUS_COLORS_WITH_HOVER,
+} from "../constants/status-colors";
 
 interface StatusFilterBarProps {
   selectedStatus?: ShipmentStatus;
@@ -11,29 +15,12 @@ interface StatusFilterBarProps {
   filters?: OrderStatusCountsRequest;
 }
 
-const STATUS_COLORS: Record<ShipmentStatus, string> = {
-  Created: "bg-gray-100 text-gray-800 hover:bg-gray-200",
-  Packed: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200",
-  Shipped: "bg-blue-100 text-blue-800 hover:bg-blue-200",
-  Delivered: "bg-green-100 text-green-800 hover:bg-green-200",
-  Cancelled: "bg-red-100 text-red-800 hover:bg-red-200",
-  Returned: "bg-orange-100 text-orange-800 hover:bg-orange-200",
-};
-
-const STATUS_LABELS: Record<ShipmentStatus, string> = {
-  Created: "Created",
-  Packed: "Packed",
-  Shipped: "Shipped",
-  Delivered: "Delivered",
-  Cancelled: "Cancelled",
-  Returned: "Returned",
-};
-
 export default function StatusFilterBar({
   selectedStatus,
   onStatusChange,
   filters = {},
 }: StatusFilterBarProps) {
+  const { t } = useTranslation();
   const getSelectedSellerIds = useSellersStore(
     (state) => state.getSelectedSellerIds
   );
@@ -69,7 +56,7 @@ export default function StatusFilterBar({
     statusCounts?.reduce((sum, item) => sum + item.count, 0) || 0;
 
   return (
-    <div className="flex flex-wrap gap-2 p-4 bg-white border rounded-lg">
+    <div className="flex flex-wrap gap-2 p-4 w-fit  bg-white border rounded-lg ">
       {/* All Orders Button */}
       <Button
         variant={!selectedStatus ? "default" : "outline"}
@@ -77,7 +64,7 @@ export default function StatusFilterBar({
         onClick={() => onStatusChange(undefined)}
         className="flex items-center gap-2"
       >
-        All Orders
+        {t("orders.allOrders")}
         <span className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">
           {totalCount}
         </span>
@@ -95,10 +82,10 @@ export default function StatusFilterBar({
           className={`flex items-center gap-2 ${
             selectedStatus === statusCount.status
               ? ""
-              : STATUS_COLORS[statusCount.status]
+              : STATUS_COLORS_WITH_HOVER[statusCount.status]
           }`}
         >
-          {STATUS_LABELS[statusCount.status]}
+          {t(`orders.${statusCount.status.toLowerCase()}`)}
           <span className="px-2 py-1 text-xs bg-white/50 rounded-full">
             {statusCount.count}
           </span>

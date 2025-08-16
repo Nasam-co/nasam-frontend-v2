@@ -18,7 +18,7 @@ export class OrdersService {
       switch (key) {
         case "sellerIds":
           if (Array.isArray(value) && value.length > 0) {
-            queryParams.sellerId = value.join(",");
+            queryParams.sellerIds = value.join(",");
           }
           break;
         case "excludedMarketplacesIds":
@@ -27,7 +27,7 @@ export class OrdersService {
           }
           break;
         case "status":
-          queryParams.status = value.toLowerCase();
+          queryParams.status = value;
           break;
         default:
           queryParams[key] = value;

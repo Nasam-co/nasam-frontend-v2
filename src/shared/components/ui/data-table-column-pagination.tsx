@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/shared/components/ui/select";
+import { useTranslation } from "react-i18next";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -31,15 +32,16 @@ export function DataTablePagination<TData>({
   table,
   pagination,
 }: DataTablePaginationProps<TData>) {
+  const { t } = useTranslation();
+  
   return (
     <div className="flex items-center justify-between px-2">
       <div className="text-muted-foreground flex-1 text-sm">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+        {table.getFilteredSelectedRowModel().rows.length} {t("common.of")} {table.getFilteredRowModel().rows.length} {t("common.selected")}
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-medium">{t("common.rowsPerPage")}</p>
           <Select
             value={`${pagination ? pagination.limit : table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -63,7 +65,7 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page {pagination ? pagination.page : table.getState().pagination.pageIndex + 1}
+          {t("common.page")} {pagination ? pagination.page : table.getState().pagination.pageIndex + 1}
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -74,7 +76,7 @@ export function DataTablePagination<TData>({
             disabled={pagination ? pagination.page === 1 : !table.getCanPreviousPage()}
             onMouseEnter={() => pagination?.prefetchPreviousPage?.()}
           >
-            <span className="sr-only">Go to first page</span>
+            <span className="sr-only">{t("common.first")}</span>
             <ChevronsLeft />
           </Button>
           <Button
@@ -85,7 +87,7 @@ export function DataTablePagination<TData>({
             disabled={pagination ? pagination.page === 1 : !table.getCanPreviousPage()}
             onMouseEnter={() => pagination?.prefetchPreviousPage?.()}
           >
-            <span className="sr-only">Go to previous page</span>
+            <span className="sr-only">{t("common.previous")}</span>
             <ChevronLeft />
           </Button>
           <Button
@@ -96,7 +98,7 @@ export function DataTablePagination<TData>({
             disabled={pagination ? !pagination.hasNextPage : !table.getCanNextPage()}
             onMouseEnter={() => pagination?.prefetchNextPage?.()}
           >
-            <span className="sr-only">Go to next page</span>
+            <span className="sr-only">{t("common.next")}</span>
             <ChevronRight />
           </Button>
         </div>

@@ -18,6 +18,7 @@ import {
 } from "@/shared/components/ui/sidebar";
 import { navConfig, NavItem } from "@/shared/utils/navConfig";
 import { useState } from "react";
+import { useLanguage } from "@/shared/hooks/useLanguage";
 
 export const NasamSidebar: React.FC = () => {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ export const NasamSidebar: React.FC = () => {
   const { user, logout } = useAuthStore();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { state } = useSidebar();
-
+  const { isRTL } = useLanguage();
   const handleLogout = () => {
     try {
       logout();
@@ -61,7 +62,13 @@ export const NasamSidebar: React.FC = () => {
               {navConfig.map((item: NavItem) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton asChild isActive={isActive(item.href)}>
-                    <Link to={item.href}>
+                    <Link
+                      to={item.href}
+                      className={cn(
+                        "flex items-center gap-2",
+                        isRTL ? "justify-end" : "justify-start"
+                      )}
+                    >
                       <item.icon />
                       <span>{t(item.translationKey)}</span>
                     </Link>

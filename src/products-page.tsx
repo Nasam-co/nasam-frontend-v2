@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Upload,
   Package,
@@ -459,6 +460,7 @@ const MarketplaceStock = ({
 };
 
 const ProductsPage = () => {
+  const { t } = useTranslation();
   // Demo and navigation state
   const [demoState, setDemoState] = useState<DemoState>("empty");
   const [importScenario, setImportScenario] =
@@ -990,7 +992,7 @@ HOME-001,29,29,480`;
                         }}
                       >
                         <Plus className="w-5 h-5" />
-                        <span>Import Products</span>
+                        <span>{t("products.importProducts")}</span>
                       </button>
                     </div>
                   </div>
@@ -1052,7 +1054,7 @@ HOME-001,29,29,480`;
                               <RotateCcw className="w-4 h-4" />
                             )}
                             <span>
-                              {isSaving ? "Saving..." : "Save All Changes"}
+                              {isSaving ? t("common.saving", "Saving...") : t("products.saveAllChanges")}
                             </span>
                           </button>
 
@@ -1105,7 +1107,7 @@ HOME-001,29,29,480`;
                           }}
                         >
                           <Plus className="w-5 h-5" />
-                          <span>Import Products</span>
+                          <span>{t("products.importProducts")}</span>
                         </button>
                       )}
                     </div>
@@ -1182,7 +1184,7 @@ HOME-001,29,29,480`;
                                 onClick={() => handleSort("masterStock")}
                               >
                                 <div className="flex items-center space-x-1">
-                                  <span>Master Stock</span>
+                                  <span>{t("products.masterStock")}</span>
                                   <span className="text-xs opacity-60">
                                     {sortField === "masterStock"
                                       ? sortDirection === "desc"
@@ -1222,7 +1224,7 @@ HOME-001,29,29,480`;
                                 onClick={() => handleSort("totalUnitsSold")}
                               >
                                 <div className="flex items-center space-x-1">
-                                  <span>Total Units Sold</span>
+                                  <span>{t("products.totalUnitsSold")}</span>
                                   <span className="text-xs opacity-60">
                                     {sortField === "totalUnitsSold"
                                       ? sortDirection === "desc"
@@ -1344,10 +1346,10 @@ HOME-001,29,29,480`;
                                           }
                                         >
                                           {status === "success"
-                                            ? "Synced"
+                                            ? t("products.synced")
                                             : status === "partial"
                                             ? "Issues"
-                                            : "Failed"}
+                                            : t("products.failed")}
                                         </span>
                                       </div>
                                     </div>
@@ -1720,7 +1722,7 @@ HOME-001,29,29,480`;
                 className="text-xl font-semibold mb-4"
                 style={{ color: "var(--foreground)" }}
               >
-                Import Products
+                {t("products.importProducts")}
               </h3>
 
               <div className="space-y-6">
@@ -1829,7 +1831,7 @@ HOME-001,29,29,480`;
                       }}
                     >
                       <RotateCcw className="w-4 h-4" />
-                      <span>Download Template</span>
+                      <span>{t("products.downloadTemplate")}</span>
                     </button>
 
                     <label className="relative flex-1">
@@ -1940,7 +1942,7 @@ HOME-001,29,29,480`;
                       }}
                     >
                       <RotateCcw className="w-4 h-4" />
-                      <span>Download Template</span>
+                      <span>{t("products.downloadTemplate")}</span>
                     </button>
 
                     <label className="relative flex-1">
