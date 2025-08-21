@@ -80,14 +80,14 @@ export function DataTable<TData, TValue>({
       <div className="flex items-center py-4">
         <DataTableViewOptions table={table} />
       </div>
-      <div className="overflow-hidden rounded-md border">
-        <Table className="bg-white">
+      <div className="overflow-x-auto rounded-md border">
+        <Table className="bg-white min-w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow className="" key={headerGroup.id}>
+              <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className="">
+                    <TableHead key={header.id} className="whitespace-nowrap">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="align-top">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
