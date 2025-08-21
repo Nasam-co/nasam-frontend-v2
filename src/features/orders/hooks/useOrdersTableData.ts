@@ -15,7 +15,7 @@ export function useOrdersTableData(params: OrdersOverviewRequest) {
       marketplace: order.marketplace,
       fulfillmentModel: order.fulfillmentModel,
       orderStatus: order.orderStatus,
-      totalAmount: order.totalAmount,
+      totalAmount: Number(order.totalAmount),
       items: order.orderItems?.length || 0,
       trackingNumber: order.trackingNumber,
     })) || [];
